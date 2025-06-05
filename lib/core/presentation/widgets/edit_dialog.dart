@@ -22,8 +22,13 @@ class _EditDialogState extends State<EditDialog> {
     super.initState();
     double initialAmount = _convertValue(
         widget.intakeEntity.amount, widget.intakeEntity.meal.mealUnit);
+    // Show 2 decimal places only if amount has a decimal component
+    // I.e 2.374 => 2.37, while 2.00 => 2
+    String initialAmountStr = (initialAmount.floor() == initialAmount)
+          ? initialAmount.toStringAsFixed(0)
+          : initialAmount.toStringAsFixed(2);
     amountEditingController =
-        TextEditingController(text: initialAmount.toStringAsFixed(2));
+        TextEditingController(text: initialAmountStr);
   }
 
   @override
