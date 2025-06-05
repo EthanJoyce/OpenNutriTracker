@@ -22,6 +22,8 @@ class DayInfoWidget extends StatelessWidget {
   final List<IntakeEntity> snackIntake;
 
   final bool usesImperialUnits;
+  final Function(BuildContext context, IntakeEntity intakeEntity, bool usesImperialUnits)
+      onUpdateIntake;
   final Function(IntakeEntity intake, TrackedDayEntity? trackedDayEntity)
       onDeleteIntake;
   final Function(UserActivityEntity userActivityEntity,
@@ -41,6 +43,7 @@ class DayInfoWidget extends StatelessWidget {
     required this.dinnerIntake,
     required this.snackIntake,
     required this.usesImperialUnits,
+    required this.onUpdateIntake,
     required this.onDeleteIntake,
     required this.onDeleteActivity,
     required this.onCopyIntake,
@@ -125,6 +128,7 @@ class DayInfoWidget extends StatelessWidget {
               listIcon: Icons.bakery_dining_outlined,
               addMealType: AddMealType.breakfastType,
               intakeList: breakfastIntake,
+              onItemTappedCallback: onUpdateIntake,
               onDeleteIntakeCallback: onDeleteIntake,
               onItemLongPressedCallback: onIntakeItemLongPressed,
               onCopyIntakeCallback:
@@ -140,6 +144,7 @@ class DayInfoWidget extends StatelessWidget {
               listIcon: Icons.lunch_dining_outlined,
               addMealType: AddMealType.lunchType,
               intakeList: lunchIntake,
+              onItemTappedCallback: onUpdateIntake,
               onDeleteIntakeCallback: onDeleteIntake,
               onItemLongPressedCallback: onIntakeItemLongPressed,
               usesImperialUnits: usesImperialUnits,
@@ -155,6 +160,7 @@ class DayInfoWidget extends StatelessWidget {
               listIcon: Icons.dinner_dining_outlined,
               addMealType: AddMealType.dinnerType,
               intakeList: dinnerIntake,
+              onItemTappedCallback: onUpdateIntake,
               onDeleteIntakeCallback: onDeleteIntake,
               onItemLongPressedCallback: onIntakeItemLongPressed,
               onCopyIntakeCallback:
@@ -169,6 +175,7 @@ class DayInfoWidget extends StatelessWidget {
               listIcon: CustomIcons.food_apple_outline,
               addMealType: AddMealType.snackType,
               intakeList: snackIntake,
+              onItemTappedCallback: onUpdateIntake,
               onDeleteIntakeCallback: onDeleteIntake,
               onItemLongPressedCallback: onIntakeItemLongPressed,
               usesImperialUnits: usesImperialUnits,
