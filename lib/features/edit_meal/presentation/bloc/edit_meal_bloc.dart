@@ -62,7 +62,7 @@ class EditMealBloc extends Bloc<EditMealEvent, EditMealState> {
         mealQuantity: mealQuantityText.toStringOrNull(),
         mealUnit: unitText,
         servingQuantity: servingQuantityText.toDoubleOrNull(),
-        servingUnit: servingQuantityText.toStringOrNull(),
+        servingUnit: unitText,
         servingSize: oldMealEntity.servingSize,
         nutriments: newMealNutriments,
         source: oldMealEntity.source);
