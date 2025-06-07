@@ -61,9 +61,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "appLicenseLabel": MessageLookupByLibrary.simpleMessage("GPL-3.0 lisansı"),
     "appTitle": MessageLookupByLibrary.simpleMessage("OpenNutriTracker"),
     "appVersionName": m0,
-    "baseQuantityLabel": MessageLookupByLibrary.simpleMessage(
-      "Temel miktar (g/ml)",
-    ),
     "betaVersionName": MessageLookupByLibrary.simpleMessage("[Beta]"),
     "bmiInfo": MessageLookupByLibrary.simpleMessage(
       "Vücut Kitle İndeksi (BMI), yetişkinlerde aşırı kiloyu ve obeziteyi sınıflandırmak için kullanılan bir indekstir. Kilogram cinsinden ağırlığın, metre cinsinden boyun karesine bölünmesiyle tanımlanır (kg/m²).\n\nBMI, yağ ve kas kütlesi arasında ayrım yapmaz ve bazı bireyler için yanıltıcı olabilir.",
@@ -216,22 +213,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Makro besin Dağılımı:",
     ),
     "mealBrandsLabel": MessageLookupByLibrary.simpleMessage("Markalar"),
-    "mealCarbsLabel": MessageLookupByLibrary.simpleMessage(
-      "karbonhidrat başına",
-    ),
-    "mealFatLabel": MessageLookupByLibrary.simpleMessage("yağ başına"),
-    "mealKcalLabel": MessageLookupByLibrary.simpleMessage("kcal başına"),
+    "mealCarbsLabel": MessageLookupByLibrary.simpleMessage("karbonhidrat"),
+    "mealFatLabel": MessageLookupByLibrary.simpleMessage("yağ"),
+    "mealKcalLabel": MessageLookupByLibrary.simpleMessage("kcal"),
     "mealNameLabel": MessageLookupByLibrary.simpleMessage("Yemek adı"),
-    "mealProteinLabel": MessageLookupByLibrary.simpleMessage(
-      "protein başına 100 g/ml",
-    ),
+    "mealProteinLabel": MessageLookupByLibrary.simpleMessage("protein"),
     "mealSizeLabel": MessageLookupByLibrary.simpleMessage(
       "Yemek boyutu (g/ml)",
     ),
     "mealSizeLabelImperial": MessageLookupByLibrary.simpleMessage(
       "Yemek boyutu (oz/fl oz)",
     ),
-    "mealUnitLabel": MessageLookupByLibrary.simpleMessage("Yemek birimi"),
     "milliliterUnit": MessageLookupByLibrary.simpleMessage("ml"),
     "missingProductInfo": MessageLookupByLibrary.simpleMessage(
       "Üründe gerekli kcal veya makro besin bilgileri eksik",

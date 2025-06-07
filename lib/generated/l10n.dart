@@ -1203,16 +1203,6 @@ class S {
     return Intl.message('Quantity', name: 'quantityLabel', desc: '', args: []);
   }
 
-  /// `Base quantity (g/ml)`
-  String get baseQuantityLabel {
-    return Intl.message(
-      'Base quantity (g/ml)',
-      name: 'baseQuantityLabel',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Unit`
   String get unitLabel {
     return Intl.message('Unit', name: 'unitLabel', desc: '', args: []);
@@ -1303,20 +1293,20 @@ class S {
     return Intl.message('Brands', name: 'mealBrandsLabel', desc: '', args: []);
   }
 
-  /// `Meal size (g/ml)`
+  /// `Package size (g/ml)`
   String get mealSizeLabel {
     return Intl.message(
-      'Meal size (g/ml)',
+      'Package size (g/ml)',
       name: 'mealSizeLabel',
       desc: '',
       args: [],
     );
   }
 
-  /// `Meal size (oz/fl oz)`
+  /// `Package size (oz/fl oz)`
   String get mealSizeLabelImperial {
     return Intl.message(
-      'Meal size (oz/fl oz)',
+      'Package size (oz/fl oz)',
       name: 'mealSizeLabelImperial',
       desc: '',
       args: [],
@@ -1358,35 +1348,25 @@ class S {
     );
   }
 
-  /// `Meal unit`
-  String get mealUnitLabel {
-    return Intl.message('Meal unit', name: 'mealUnitLabel', desc: '', args: []);
-  }
-
-  /// `kcal per`
+  /// `kcal`
   String get mealKcalLabel {
-    return Intl.message('kcal per', name: 'mealKcalLabel', desc: '', args: []);
+    return Intl.message('kcal', name: 'mealKcalLabel', desc: '', args: []);
   }
 
-  /// `carbs per`
+  /// `carbs`
   String get mealCarbsLabel {
-    return Intl.message(
-      'carbs per',
-      name: 'mealCarbsLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('carbs', name: 'mealCarbsLabel', desc: '', args: []);
   }
 
-  /// `fat per`
+  /// `fat`
   String get mealFatLabel {
-    return Intl.message('fat per', name: 'mealFatLabel', desc: '', args: []);
+    return Intl.message('fat', name: 'mealFatLabel', desc: '', args: []);
   }
 
-  /// `protein per 100 g/ml`
+  /// `protein`
   String get mealProteinLabel {
     return Intl.message(
-      'protein per 100 g/ml',
+      'protein',
       name: 'mealProteinLabel',
       desc: '',
       args: [],

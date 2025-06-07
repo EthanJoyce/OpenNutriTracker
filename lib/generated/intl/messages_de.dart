@@ -224,22 +224,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Makronährstoff-Verteilung:",
     ),
     "mealBrandsLabel": MessageLookupByLibrary.simpleMessage("Marken"),
-    "mealCarbsLabel": MessageLookupByLibrary.simpleMessage(
-      "Kohlenhydrate pro 100 g/ml",
-    ),
-    "mealFatLabel": MessageLookupByLibrary.simpleMessage("Fett pro 100 g/ml"),
-    "mealKcalLabel": MessageLookupByLibrary.simpleMessage("kcal pro 100 g/ml"),
+    "mealCarbsLabel": MessageLookupByLibrary.simpleMessage("Kohlenhydrate"),
+    "mealFatLabel": MessageLookupByLibrary.simpleMessage("Fett"),
+    "mealKcalLabel": MessageLookupByLibrary.simpleMessage("kcal"),
     "mealNameLabel": MessageLookupByLibrary.simpleMessage("Mahlzeitenname"),
-    "mealProteinLabel": MessageLookupByLibrary.simpleMessage(
-      "Protein pro 100 g/ml",
-    ),
+    "mealProteinLabel": MessageLookupByLibrary.simpleMessage("Protein"),
     "mealSizeLabel": MessageLookupByLibrary.simpleMessage(
       "Mahlzeitsgröße (g/ml)",
     ),
     "mealSizeLabelImperial": MessageLookupByLibrary.simpleMessage(
       "Mahlzeitsgröße (oz/fl oz)",
     ),
-    "mealUnitLabel": MessageLookupByLibrary.simpleMessage("Mahlzeiteinheit"),
     "milliliterUnit": MessageLookupByLibrary.simpleMessage("ml"),
     "missingProductInfo": MessageLookupByLibrary.simpleMessage(
       "Produkt fehlen die erforderlichen Angaben zu Kalorien oder Makronährstoffen",

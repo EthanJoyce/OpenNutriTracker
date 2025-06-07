@@ -73,9 +73,9 @@ class MealItemCard extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis),
-            subtitle: mealEntity.mealQuantity != null
+            subtitle: mealEntity.servingQuantity != null
                 ? MealValueUnitText(
-                    value: double.parse(mealEntity.mealQuantity ?? "0"),
+                    value: mealEntity.servingQuantity ?? 0,
                     meal: mealEntity,
                     usesImperialUnits: usesImperialUnits)
                 : const SizedBox(),

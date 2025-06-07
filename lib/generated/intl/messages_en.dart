@@ -61,9 +61,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "appLicenseLabel": MessageLookupByLibrary.simpleMessage("GPL-3.0 license"),
     "appTitle": MessageLookupByLibrary.simpleMessage("OpenNutriTracker"),
     "appVersionName": m0,
-    "baseQuantityLabel": MessageLookupByLibrary.simpleMessage(
-      "Base quantity (g/ml)",
-    ),
     "betaVersionName": MessageLookupByLibrary.simpleMessage("[Beta]"),
     "bmiInfo": MessageLookupByLibrary.simpleMessage(
       "Body Mass Index (BMI) is a index to classify overweight and obesity in adults. It is defined as weight in kilograms divided by the square of height in meters (kg/m²).\n\nBMI does not differentiate between fat and muscle mass and can be misleading for some individuals.",
@@ -217,18 +214,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Macronutrient Distribution:",
     ),
     "mealBrandsLabel": MessageLookupByLibrary.simpleMessage("Brands"),
-    "mealCarbsLabel": MessageLookupByLibrary.simpleMessage("carbs per"),
-    "mealFatLabel": MessageLookupByLibrary.simpleMessage("fat per"),
-    "mealKcalLabel": MessageLookupByLibrary.simpleMessage("kcal per"),
+    "mealCarbsLabel": MessageLookupByLibrary.simpleMessage("carbs"),
+    "mealFatLabel": MessageLookupByLibrary.simpleMessage("fat"),
+    "mealKcalLabel": MessageLookupByLibrary.simpleMessage("kcal"),
     "mealNameLabel": MessageLookupByLibrary.simpleMessage("Meal name"),
-    "mealProteinLabel": MessageLookupByLibrary.simpleMessage(
-      "protein per 100 g/ml",
+    "mealProteinLabel": MessageLookupByLibrary.simpleMessage("protein"),
+    "mealSizeLabel": MessageLookupByLibrary.simpleMessage(
+      "Package size (g/ml)",
     ),
-    "mealSizeLabel": MessageLookupByLibrary.simpleMessage("Meal size (g/ml)"),
     "mealSizeLabelImperial": MessageLookupByLibrary.simpleMessage(
-      "Meal size (oz/fl oz)",
+      "Package size (oz/fl oz)",
     ),
-    "mealUnitLabel": MessageLookupByLibrary.simpleMessage("Meal unit"),
     "milliliterUnit": MessageLookupByLibrary.simpleMessage("ml"),
     "missingProductInfo": MessageLookupByLibrary.simpleMessage(
       "Product missing required kcal or macronutrients information",

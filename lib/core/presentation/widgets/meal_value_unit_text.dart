@@ -23,9 +23,9 @@ class MealValueUnitText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mealUnit = meal.mealUnit ?? S.of(context).gramMilliliterUnit;
-    final unitToDisplay = displayUnit ?? _convertUnit(context, mealUnit);
-    final convertedValue = _convertValue(value, mealUnit, unitToDisplay);
+    final unit = meal.servingUnit ?? S.of(context).gramMilliliterUnit;
+    final unitToDisplay = displayUnit ?? _convertUnit(context, unit);
+    final convertedValue = _convertValue(value, unit, unitToDisplay);
 
     return Text(
       '$prefix${_formatValue(convertedValue)} $unitToDisplay',

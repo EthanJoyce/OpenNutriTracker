@@ -25,9 +25,9 @@ class MealDBO extends HiveObject {
   final String? url;
 
   @HiveField(6)
-  final String? mealQuantity;
+  final String? mealQuantityDeprecated;
   @HiveField(7)
-  final String? mealUnit;
+  final String? mealUnitDeprecated;
   @HiveField(8)
   final double? servingQuantity;
   @HiveField(9)
@@ -49,8 +49,8 @@ class MealDBO extends HiveObject {
       required this.thumbnailImageUrl,
       required this.mainImageUrl,
       required this.url,
-      required this.mealQuantity,
-      required this.mealUnit,
+      required this.mealQuantityDeprecated,
+      required this.mealUnitDeprecated,
       required this.servingQuantity,
       required this.servingUnit,
       required this.servingSize,
@@ -64,8 +64,8 @@ class MealDBO extends HiveObject {
       thumbnailImageUrl: mealEntity.thumbnailImageUrl,
       mainImageUrl: mealEntity.mainImageUrl,
       url: mealEntity.url,
-      mealQuantity: mealEntity.mealQuantity,
-      mealUnit: mealEntity.mealUnit,
+      mealQuantityDeprecated: null,
+      mealUnitDeprecated: null,
       servingQuantity: mealEntity.servingQuantity,
       servingUnit: mealEntity.servingUnit,
       servingSize: mealEntity.servingSize,

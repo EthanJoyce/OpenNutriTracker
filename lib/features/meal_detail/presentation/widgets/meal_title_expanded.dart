@@ -40,23 +40,6 @@ class MealTitleExpanded extends StatelessWidget {
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis),
-            meal.mealQuantity != null
-                ? Center(
-                    child: MealValueUnitText(
-                        value: double.tryParse(meal.mealQuantity ?? '') ?? 0,
-                        meal: meal,
-                        usesImperialUnits: usesImperialUnits,
-                        textStyle: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
-                            ?.copyWith(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurface
-                                    .withValues(alpha: 0.8)),
-                        prefix: ''),
-                  )
-                : const SizedBox(),
           ],
         ),
       ),

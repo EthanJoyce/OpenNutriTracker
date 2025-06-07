@@ -30,8 +30,6 @@ class MealEntity extends Equatable {
 
   final String? url;
 
-  final String? mealQuantity;
-  final String? mealUnit;
   final double? servingQuantity;
   final String? servingUnit;
   final String? servingSize;
@@ -42,9 +40,29 @@ class MealEntity extends Equatable {
 
   final MealNutrimentsEntity nutriments;
 
-  bool get isLiquid => liquidUnits.contains(mealUnit);
+  bool get isLiquid => liquidUnits.contains(servingUnit);
 
-  bool get isSolid => solidUnits.contains(mealUnit);
+  bool get isSolid => solidUnits.contains(servingUnit);
+
+  double? get kcalPerServing {
+    final double factorTo100g = (servingQuantity ?? 100) / 100;
+    return nutriments.energyKcal100 != null ? nutriments.energyKcal100 !* factorTo100g : null;
+  }
+
+  double? get fatPerServing {
+    final double factorTo100g = (servingQuantity ?? 100) / 100;
+    return nutriments.fat100 != null ? nutriments.fat100 !* factorTo100g : null;
+  }
+
+  double? get carbsPerServing {
+    final double factorTo100g =  (servingQuantity ?? 100) / 100;
+    return nutriments.carbohydrates100 != null ? nutriments.carbohydrates100 !* factorTo100g : null;
+  }
+
+  double? get proteinsPerServing {
+    final double factorTo100g = (servingQuantity ?? 100) / 100;
+    return nutriments.proteins100 != null ? nutriments.proteins100 !* factorTo100g : null;
+  }
 
   const MealEntity(
       {required this.code,
@@ -53,8 +71,6 @@ class MealEntity extends Equatable {
       this.thumbnailImageUrl,
       this.mainImageUrl,
       required this.url,
-      required this.mealQuantity,
-      required this.mealUnit,
       required this.servingQuantity,
       required this.servingUnit,
       required this.servingSize,
@@ -65,10 +81,8 @@ class MealEntity extends Equatable {
       code: IdGenerator.getUniqueID(),
       name: null,
       url: null,
-      mealQuantity: null,
-      mealUnit: 'gml',
       servingQuantity: null,
-      servingUnit: 'gml',
+      servingUnit: 'g',
       servingSize: '',
       nutriments: MealNutrimentsEntity.empty(),
       source: MealSourceEntity.custom);
@@ -80,8 +94,6 @@ class MealEntity extends Equatable {
       thumbnailImageUrl: mealDBO.thumbnailImageUrl,
       mainImageUrl: mealDBO.mainImageUrl,
       url: mealDBO.url,
-      mealQuantity: mealDBO.mealQuantity,
-      mealUnit: mealDBO.mealUnit,
       servingQuantity: mealDBO.servingQuantity,
       servingUnit: mealDBO.servingUnit,
       servingSize: mealDBO.servingSize,
@@ -98,8 +110,6 @@ class MealEntity extends Equatable {
         thumbnailImageUrl: offProduct.image_front_thumb_url,
         mainImageUrl: offProduct.image_front_url,
         url: offProduct.url,
-        mealQuantity: offProduct.product_quantity?.toString(),
-        mealUnit: _tryGetUnit(offProduct.quantity),
         servingQuantity: _tryQuantityCast(offProduct.serving_quantity),
         servingUnit: _tryGetUnit(offProduct.quantity),
         servingSize: offProduct.serving_size,
@@ -116,8 +126,6 @@ class MealEntity extends Equatable {
         name: fdcFood.description,
         brands: fdcFood.brandName,
         url: FDCConst.getFoodDetailUrlString(fdcId),
-        mealQuantity: fdcFood.packageWeight,
-        mealUnit: fdcFood.servingSizeUnit,
         servingQuantity: fdcFood.servingSize,
         servingUnit: fdcFood.servingSizeUnit,
         servingSize: fdcFood.servingSizeUnit,
@@ -135,8 +143,6 @@ class MealEntity extends Equatable {
             SupportedLanguage.fromCode(Platform.localeName)),
         brands: null,
         url: FDCConst.getFoodDetailUrlString(fdcId),
-        mealQuantity: null,
-        mealUnit: FDCConst.fdcDefaultUnit,
         servingQuantity: foodItem.servingSize,
         servingUnit: FDCConst.fdcDefaultUnit,
         servingSize:

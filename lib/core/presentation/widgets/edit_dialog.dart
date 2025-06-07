@@ -21,7 +21,7 @@ class _EditDialogState extends State<EditDialog> {
   void initState() {
     super.initState();
     double initialAmount = _convertValue(
-        widget.intakeEntity.amount, widget.intakeEntity.meal.mealUnit);
+        widget.intakeEntity.amount, widget.intakeEntity.meal.servingUnit);
     // Show 2 decimal places only if amount has a decimal component
     // I.e 2.374 => 2.37, while 2.00 => 2
     String initialAmountStr = (initialAmount.floor() == initialAmount)
@@ -42,7 +42,7 @@ class _EditDialogState extends State<EditDialog> {
           decoration: InputDecoration(
               labelText: S.of(context).quantityLabel,
               suffixText:
-                  _convertUnit(widget.intakeEntity.meal.mealUnit ?? '')),
+                  _convertUnit(widget.intakeEntity.meal.servingUnit ?? '')),
         )
       ]),
       actions: [
@@ -50,7 +50,7 @@ class _EditDialogState extends State<EditDialog> {
             onPressed: () {
               double newAmount = double.parse(amountEditingController.text);
               Navigator.of(context).pop(_convertBackToMetricValue(
-                  newAmount, widget.intakeEntity.meal.mealUnit));
+                  newAmount, widget.intakeEntity.meal.servingUnit));
             },
             child: Text(S.of(context).dialogOKLabel)),
         TextButton(

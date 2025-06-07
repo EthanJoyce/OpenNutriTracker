@@ -25,15 +25,13 @@ class EditMealBloc extends Bloc<EditMealEvent, EditMealState> {
       MealEntity oldMealEntity,
       String nameText,
       String brandsText,
-      String mealQuantityText,
       String servingQuantityText,
-      String baseQuantity,
       String? unitText,
       String kcalText,
       String carbsText,
       String fatText,
       String proteinText) {
-    final baseQuantityDouble = double.tryParse(baseQuantity);
+    final baseQuantityDouble = double.tryParse(servingQuantityText);
 
     final double factorTo100g =
         baseQuantityDouble != null ? (100 / baseQuantityDouble) : 1;
@@ -59,8 +57,6 @@ class EditMealBloc extends Bloc<EditMealEvent, EditMealState> {
         url: oldMealEntity.url,
         thumbnailImageUrl: oldMealEntity.thumbnailImageUrl,
         mainImageUrl: oldMealEntity.mainImageUrl,
-        mealQuantity: mealQuantityText.toStringOrNull(),
-        mealUnit: unitText,
         servingQuantity: servingQuantityText.toDoubleOrNull(),
         servingUnit: unitText,
         servingSize: oldMealEntity.servingSize,

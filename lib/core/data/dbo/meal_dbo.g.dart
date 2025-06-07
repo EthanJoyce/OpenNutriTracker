@@ -23,8 +23,8 @@ class MealDBOAdapter extends TypeAdapter<MealDBO> {
       thumbnailImageUrl: fields[3] as String?,
       mainImageUrl: fields[4] as String?,
       url: fields[5] as String?,
-      mealQuantity: fields[6] as String?,
-      mealUnit: fields[7] as String?,
+      mealQuantityDeprecated: fields[6] as String?,
+      mealUnitDeprecated: fields[7] as String?,
       servingQuantity: fields[8] as double?,
       servingUnit: fields[9] as String?,
       servingSize: fields[12] as String?,
@@ -50,9 +50,9 @@ class MealDBOAdapter extends TypeAdapter<MealDBO> {
       ..writeByte(5)
       ..write(obj.url)
       ..writeByte(6)
-      ..write(obj.mealQuantity)
+      ..write(obj.mealQuantityDeprecated)
       ..writeByte(7)
-      ..write(obj.mealUnit)
+      ..write(obj.mealUnitDeprecated)
       ..writeByte(8)
       ..write(obj.servingQuantity)
       ..writeByte(9)
@@ -136,8 +136,8 @@ MealDBO _$MealDBOFromJson(Map<String, dynamic> json) => MealDBO(
       thumbnailImageUrl: json['thumbnailImageUrl'] as String?,
       mainImageUrl: json['mainImageUrl'] as String?,
       url: json['url'] as String?,
-      mealQuantity: json['mealQuantity'] as String?,
-      mealUnit: json['mealUnit'] as String?,
+      mealQuantityDeprecated: json['mealQuantityDeprecated'] as String?,
+      mealUnitDeprecated: json['mealUnitDeprecated'] as String?,
       servingQuantity: (json['servingQuantity'] as num?)?.toDouble(),
       servingUnit: json['servingUnit'] as String?,
       servingSize: json['servingSize'] as String?,
@@ -153,8 +153,8 @@ Map<String, dynamic> _$MealDBOToJson(MealDBO instance) => <String, dynamic>{
       'thumbnailImageUrl': instance.thumbnailImageUrl,
       'mainImageUrl': instance.mainImageUrl,
       'url': instance.url,
-      'mealQuantity': instance.mealQuantity,
-      'mealUnit': instance.mealUnit,
+      'mealQuantityDeprecated': instance.mealQuantityDeprecated,
+      'mealUnitDeprecated': instance.mealUnitDeprecated,
       'servingQuantity': instance.servingQuantity,
       'servingUnit': instance.servingUnit,
       'servingSize': instance.servingSize,
