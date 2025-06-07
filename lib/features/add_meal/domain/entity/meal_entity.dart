@@ -126,7 +126,7 @@ class MealEntity extends Equatable {
         name: fdcFood.description,
         brands: fdcFood.brandName,
         url: FDCConst.getFoodDetailUrlString(fdcId),
-        servingQuantity: fdcFood.servingSize,
+        servingQuantity: (fdcFood.servingSize == null || fdcFood.servingSize == 0) ? FDCConst.fdcServingSize.toDouble() : fdcFood.servingSize,
         servingUnit: fdcFood.servingSizeUnit,
         servingSize: fdcFood.servingSizeUnit,
         nutriments:

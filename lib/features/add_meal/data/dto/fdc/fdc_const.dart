@@ -195,4 +195,7 @@ class FDCConst {
   // Measure unit codes
   static const fdcPortionServingId = 1049;
   static const fdcPortionUnknownId = 9999;
+
+  // Miscellaneous
+  static const fdcServingSize = 100; // Serving size is always provided as 100g or 100ml
 }
