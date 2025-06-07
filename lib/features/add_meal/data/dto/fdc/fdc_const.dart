@@ -19,6 +19,10 @@ class FDCConst {
   static const _fdcSortOrderAscValue = "asc";
   static const _fdcApiKeyTag = "api_key";
 
+  // API Response Field names
+  static const fdcFieldNutrientId = 'nutrientId';
+  static const fdcFieldNutrientAmount = 'value';
+
   static const _dataTypeParams = [
     _fdcDataTypeFoundationValue,
     _fdcDataTypeSRLegacyValue
