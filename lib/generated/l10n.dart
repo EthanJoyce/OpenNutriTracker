@@ -1283,14 +1283,19 @@ class S {
     return Intl.message('Edit meal', name: 'editMealLabel', desc: '', args: []);
   }
 
-  /// `Meal name`
+  /// `Product name`
   String get mealNameLabel {
-    return Intl.message('Meal name', name: 'mealNameLabel', desc: '', args: []);
+    return Intl.message(
+      'Product name',
+      name: 'mealNameLabel',
+      desc: '',
+      args: [],
+    );
   }
 
-  /// `Brands`
+  /// `Brand`
   String get mealBrandsLabel {
-    return Intl.message('Brands', name: 'mealBrandsLabel', desc: '', args: []);
+    return Intl.message('Brand', name: 'mealBrandsLabel', desc: '', args: []);
   }
 
   /// `Package size (g/ml)`

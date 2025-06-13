@@ -199,20 +199,20 @@ class _EditMealScreenState extends State<EditMealScreen> {
         ),
         const SizedBox(height: 16),
         TextFormField(
-          controller: _carbsTextController,
-          inputFormatters: CustomTextInputFormatter.doubleOnly(),
-          decoration: InputDecoration(
-              labelText: S.of(context).mealCarbsLabel,
-              border: const OutlineInputBorder()),
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        ),
-        const SizedBox(height: 16),
-        TextFormField(
           controller: _fatTextController,
           inputFormatters: CustomTextInputFormatter.doubleOnly(),
           decoration: InputDecoration(
               labelText:
                   S.of(context).mealFatLabel,
+              border: const OutlineInputBorder()),
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        ),
+        const SizedBox(height: 16),
+        TextFormField(
+          controller: _carbsTextController,
+          inputFormatters: CustomTextInputFormatter.doubleOnly(),
+          decoration: InputDecoration(
+              labelText: S.of(context).mealCarbsLabel,
               border: const OutlineInputBorder()),
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
         ),

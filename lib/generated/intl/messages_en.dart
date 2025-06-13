@@ -213,11 +213,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "macroDistributionLabel": MessageLookupByLibrary.simpleMessage(
       "Macronutrient Distribution:",
     ),
-    "mealBrandsLabel": MessageLookupByLibrary.simpleMessage("Brands"),
+    "mealBrandsLabel": MessageLookupByLibrary.simpleMessage("Brand"),
     "mealCarbsLabel": MessageLookupByLibrary.simpleMessage("carbs"),
     "mealFatLabel": MessageLookupByLibrary.simpleMessage("fat"),
     "mealKcalLabel": MessageLookupByLibrary.simpleMessage("kcal"),
-    "mealNameLabel": MessageLookupByLibrary.simpleMessage("Meal name"),
+    "mealNameLabel": MessageLookupByLibrary.simpleMessage("Product name"),
     "mealProteinLabel": MessageLookupByLibrary.simpleMessage("protein"),
     "mealSizeLabel": MessageLookupByLibrary.simpleMessage(
       "Package size (g/ml)",
