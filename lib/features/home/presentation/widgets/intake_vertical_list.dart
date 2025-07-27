@@ -27,7 +27,7 @@ class IntakeVerticalList extends StatefulWidget {
       onDeleteIntakeCallback;
   final Function(BuildContext, IntakeEntity)? onItemLongPressedCallback;
   final Function(bool)? onItemDragCallback;
-  final Function(BuildContext, IntakeEntity, bool)? onItemTappedCallback;
+  final Function(BuildContext, IntakeEntity, bool, TrackedDayEntity?)? onItemTappedCallback;
   final Function(IntakeEntity intake, TrackedDayEntity? trackedDayEntity,
       AddMealType? type)? onCopyIntakeCallback;
   final TrackedDayEntity? trackedDayEntity;
@@ -219,7 +219,9 @@ class _IntakeVerticalListState extends State<IntakeVerticalList> {
                         key: ValueKey(intakeEntity.meal.code),
                         intake: intakeEntity,
                         onItemLongPressed: widget.onItemLongPressedCallback,
-                        onItemTapped: widget.onItemTappedCallback,
+                        onItemTapped:
+                          (BuildContext context, IntakeEntity intake, bool usesImperial)
+                            => widget.onItemTappedCallback?.call(context, intake, usesImperial, widget.trackedDayEntity),
                         firstListElement: firstListElement,
                         usesImperialUnits: widget.usesImperialUnits,
                       ),

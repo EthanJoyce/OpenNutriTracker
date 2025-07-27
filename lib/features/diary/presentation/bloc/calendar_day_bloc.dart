@@ -77,8 +77,7 @@ class CalendarDayBloc extends Bloc<CalendarDayEvent, CalendarDayState> {
   }
 
   Future<void> updateIntakeItem(
-      String intakeId, Map<String, dynamic> fields) async {
-    final dateTime = DateTime.now();
+      String intakeId, Map<String, dynamic> fields, DateTime day) async {
     // Get old intake values
     final oldIntakeObject = await _getIntakeUsecase.getIntakeById(intakeId);
     assert(oldIntakeObject != null);
@@ -88,8 +87,8 @@ class CalendarDayBloc extends Bloc<CalendarDayEvent, CalendarDayState> {
     if (oldIntakeObject!.amount > newIntakeObject!.amount) {
       // Amounts shrunk
       await _addTrackedDayUsecase.removeDayCaloriesTracked(
-          dateTime, oldIntakeObject.totalKcal - newIntakeObject.totalKcal);
-      await _addTrackedDayUsecase.removeDayMacrosTracked(dateTime,
+          day, oldIntakeObject.totalKcal - newIntakeObject.totalKcal);
+      await _addTrackedDayUsecase.removeDayMacrosTracked(day,
           carbsTracked:
               oldIntakeObject.totalCarbsGram - newIntakeObject.totalCarbsGram,
           fatTracked:
@@ -99,8 +98,8 @@ class CalendarDayBloc extends Bloc<CalendarDayEvent, CalendarDayState> {
     } else if (newIntakeObject.amount > oldIntakeObject.amount) {
       // Amounts gained
       await _addTrackedDayUsecase.addDayCaloriesTracked(
-          dateTime, newIntakeObject.totalKcal - oldIntakeObject.totalKcal);
-      await _addTrackedDayUsecase.addDayMacrosTracked(dateTime,
+          day, newIntakeObject.totalKcal - oldIntakeObject.totalKcal);
+      await _addTrackedDayUsecase.addDayMacrosTracked(day,
           carbsTracked:
               newIntakeObject.totalCarbsGram - oldIntakeObject.totalCarbsGram,
           fatTracked:

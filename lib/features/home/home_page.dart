@@ -252,7 +252,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   void onIntakeItemTapped(BuildContext context, IntakeEntity intakeEntity,
-      bool usesImperialUnits) async {
+      bool usesImperialUnits, DateTime /*day*/) async {
     final changeIntakeAmount = await showDialog<double>(
         context: context,
         builder: (context) => EditDialog(

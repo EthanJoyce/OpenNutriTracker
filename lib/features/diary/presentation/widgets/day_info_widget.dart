@@ -22,7 +22,7 @@ class DayInfoWidget extends StatelessWidget {
   final List<IntakeEntity> snackIntake;
 
   final bool usesImperialUnits;
-  final Function(BuildContext context, IntakeEntity intakeEntity, bool usesImperialUnits)
+  final Function(BuildContext context, IntakeEntity intakeEntity, bool usesImperialUnits, TrackedDayEntity? trackedDayEntity)
       onUpdateIntake;
   final Function(IntakeEntity intake, TrackedDayEntity? trackedDayEntity)
       onDeleteIntake;
