@@ -182,8 +182,9 @@ class MealDetailBottomSheet extends StatelessWidget {
     return DropdownMenuItem(
       value: UnitDropdownItem.serving.toString(),
       child: Text(
-          product.servingSize ??
-              '${S.of(context).servingLabel} (${product.servingQuantity} ${product.servingUnit})',
+          ((product.servingSize != null) && (product.servingSize != '')) ?
+              product.servingSize! :
+              '${S.of(context).servingLabel} (${product.servingQuantity?.toInt()} ${product.servingUnit})',
           overflow: TextOverflow.ellipsis,
           maxLines: 1),
     );
