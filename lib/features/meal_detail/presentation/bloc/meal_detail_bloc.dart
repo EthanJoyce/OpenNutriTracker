@@ -104,12 +104,6 @@ class MealDetailBloc extends Bloc<MealDetailEvent, MealDetailState> {
       await _addTrackedDayUsecase.addNewTrackedDay(
           day, totalKcalGoal, totalCarbsGoal, totalFatGoal, totalProteinGoal);
     }
-
-    _addTrackedDayUsecase.addDayCaloriesTracked(day, intakeEntity.totalKcal);
-    _addTrackedDayUsecase.addDayMacrosTracked(day,
-        carbsTracked: intakeEntity.totalCarbsGram,
-        fatTracked: intakeEntity.totalFatsGram,
-        proteinTracked: intakeEntity.totalProteinsGram);
   }
 }
 

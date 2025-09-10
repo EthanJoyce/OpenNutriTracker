@@ -52,7 +52,7 @@ class DayInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final trackedDay = trackedDayEntity;
+    final (kcalTracked, carbsTracked, fatTracked, proteinTracked) = _getCaloriesAndMacrosTracked();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -65,7 +65,7 @@ class DayInfoWidget extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            trackedDay == null
+            trackedDayEntity == null
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(S.of(context).nothingAddedLabel,
@@ -75,7 +75,7 @@ class DayInfoWidget extends StatelessWidget {
                                 .onSurface.withValues(alpha: 0.7))),
                   )
                 : const SizedBox(),
-            trackedDay != null
+            trackedDayEntity != null
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Column(
@@ -85,24 +85,24 @@ class DayInfoWidget extends StatelessWidget {
                           elevation: 0.0,
                           margin: const EdgeInsets.all(0.0),
                           color: trackedDayEntity
-                              ?.getRatingDayTextBackgroundColor(context),
+                              ?.getRatingDayTextBackgroundColor(context, kcalTracked),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8.0, vertical: 8.0),
                             child: Text(
-                              _getCaloriesTrackedDisplayString(trackedDay),
+                              _getCaloriesTrackedDisplayString(trackedDayEntity!, kcalTracked),
                               style: Theme.of(context)
                                   .textTheme
                                   .titleLarge
                                   ?.copyWith(
                                       color: trackedDayEntity
-                                          ?.getRatingDayTextColor(context),
+                                          ?.getRatingDayTextColor(context, kcalTracked),
                                       fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
                         const SizedBox(height: 4.0),
-                        Text(_getMacroTrackedDisplayString(trackedDay),
+                        Text(_getMacroTrackedDisplayString(trackedDayEntity!, carbsTracked, fatTracked, proteinTracked),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
@@ -136,7 +136,7 @@ class DayInfoWidget extends StatelessWidget {
                       ? null
                       : onCopyIntake,
               usesImperialUnits: usesImperialUnits,
-              trackedDayEntity: trackedDay,
+              trackedDayEntity: trackedDayEntity,
             ),
             IntakeVerticalList(
               day: selectedDay,
@@ -152,7 +152,7 @@ class DayInfoWidget extends StatelessWidget {
                   DateUtils.isSameDay(selectedDay, DateTime.now())
                       ? null
                       : onCopyIntake,
-              trackedDayEntity: trackedDay,
+              trackedDayEntity: trackedDayEntity,
             ),
             IntakeVerticalList(
               day: selectedDay,
@@ -183,7 +183,7 @@ class DayInfoWidget extends StatelessWidget {
                   DateUtils.isSameDay(selectedDay, DateTime.now())
                       ? null
                       : onCopyIntake,
-              trackedDayEntity: trackedDay,
+              trackedDayEntity: trackedDayEntity,
             ),
             const SizedBox(height: 16.0)
           ],
@@ -192,27 +192,33 @@ class DayInfoWidget extends StatelessWidget {
     );
   }
 
-  String _getCaloriesTrackedDisplayString(TrackedDayEntity trackedDay) {
-    int caloriesTracked;
-    if (trackedDay.caloriesTracked.isNegative) {
-      caloriesTracked = 0;
-    } else {
-      caloriesTracked = trackedDay.caloriesTracked.toInt();
-    }
+  (double, double, double, double) _getCaloriesAndMacrosTracked() {
+    double caloriesTracked = 0;
+    double carbsTracked = 0;
+    double fatTracked = 0;
+    double proteinTracked = 0;
 
-    return '$caloriesTracked/${trackedDay.calorieGoal.toInt()} kcal';
+    final List<List<IntakeEntity>> intakeEntityLists = [breakfastIntake, lunchIntake, dinnerIntake, snackIntake];
+    for (var intakeList in intakeEntityLists) {
+      for (var intakeItem in intakeList) {
+        caloriesTracked += intakeItem.totalKcal;
+        carbsTracked += intakeItem.totalCarbsGram;
+        fatTracked += intakeItem.totalFatsGram;
+        proteinTracked += intakeItem.totalProteinsGram;
+      }
+    }
+    return (caloriesTracked, carbsTracked, fatTracked, proteinTracked);
   }
 
-  String _getMacroTrackedDisplayString(TrackedDayEntity trackedDay) {
-    final carbsTracked = trackedDay.carbsTracked?.floor().toString() ?? '?';
-    final fatTracked = trackedDay.fatTracked?.floor().toString() ?? '?';
-    final proteinTracked = trackedDay.proteinTracked?.floor().toString() ?? '?';
+  String _getCaloriesTrackedDisplayString(TrackedDayEntity trackedDay, double caloriesTracked) {
+    return '${caloriesTracked.toInt()}/${trackedDay.calorieGoal.toInt()} kcal';
+  }
 
+  String _getMacroTrackedDisplayString(TrackedDayEntity trackedDay, double carbs, double fat, double protein) {
     final carbsGoal = trackedDay.carbsGoal?.floor().toString() ?? '?';
     final fatGoal = trackedDay.fatGoal?.floor().toString() ?? '?';
     final proteinGoal = trackedDay.proteinGoal?.floor().toString() ?? '?';
-
-    return 'Carbs: $carbsTracked/${carbsGoal}g, Fat: $fatTracked/${fatGoal}g, Protein: $proteinTracked/${proteinGoal}g';
+    return 'Carbs: ${carbs.toInt()}/${carbsGoal}g, Fat: ${fat.toInt()}/${fatGoal}g, Protein: ${protein.toInt()}/${proteinGoal}g';
   }
 
   void showCopyOrDeleteIntakeDialog(

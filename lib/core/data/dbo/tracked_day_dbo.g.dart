@@ -19,14 +19,14 @@ class TrackedDayDBOAdapter extends TypeAdapter<TrackedDayDBO> {
     return TrackedDayDBO(
       day: fields[0] as DateTime,
       calorieGoal: fields[1] as double,
-      caloriesTracked: fields[2] as double,
       carbsGoal: fields[3] as double?,
-      carbsTracked: fields[4] as double?,
       fatGoal: fields[5] as double?,
-      fatTracked: fields[6] as double?,
       proteinGoal: fields[7] as double?,
-      proteinTracked: fields[8] as double?,
-    );
+    )
+      ..reserved0 = fields[2] as double
+      ..reserved1 = fields[4] as double?
+      ..reserved2 = fields[6] as double?
+      ..reserved3 = fields[8] as double?;
   }
 
   @override
@@ -38,19 +38,19 @@ class TrackedDayDBOAdapter extends TypeAdapter<TrackedDayDBO> {
       ..writeByte(1)
       ..write(obj.calorieGoal)
       ..writeByte(2)
-      ..write(obj.caloriesTracked)
+      ..write(obj.reserved0)
       ..writeByte(3)
       ..write(obj.carbsGoal)
       ..writeByte(4)
-      ..write(obj.carbsTracked)
+      ..write(obj.reserved1)
       ..writeByte(5)
       ..write(obj.fatGoal)
       ..writeByte(6)
-      ..write(obj.fatTracked)
+      ..write(obj.reserved2)
       ..writeByte(7)
       ..write(obj.proteinGoal)
       ..writeByte(8)
-      ..write(obj.proteinTracked);
+      ..write(obj.reserved3);
   }
 
   @override
@@ -72,24 +72,24 @@ TrackedDayDBO _$TrackedDayDBOFromJson(Map<String, dynamic> json) =>
     TrackedDayDBO(
       day: DateTime.parse(json['day'] as String),
       calorieGoal: (json['calorieGoal'] as num).toDouble(),
-      caloriesTracked: (json['caloriesTracked'] as num).toDouble(),
       carbsGoal: (json['carbsGoal'] as num?)?.toDouble(),
-      carbsTracked: (json['carbsTracked'] as num?)?.toDouble(),
       fatGoal: (json['fatGoal'] as num?)?.toDouble(),
-      fatTracked: (json['fatTracked'] as num?)?.toDouble(),
       proteinGoal: (json['proteinGoal'] as num?)?.toDouble(),
-      proteinTracked: (json['proteinTracked'] as num?)?.toDouble(),
-    );
+    )
+      ..reserved0 = (json['reserved0'] as num).toDouble()
+      ..reserved1 = (json['reserved1'] as num?)?.toDouble()
+      ..reserved2 = (json['reserved2'] as num?)?.toDouble()
+      ..reserved3 = (json['reserved3'] as num?)?.toDouble();
 
 Map<String, dynamic> _$TrackedDayDBOToJson(TrackedDayDBO instance) =>
     <String, dynamic>{
       'day': instance.day.toIso8601String(),
       'calorieGoal': instance.calorieGoal,
-      'caloriesTracked': instance.caloriesTracked,
+      'reserved0': instance.reserved0,
       'carbsGoal': instance.carbsGoal,
-      'carbsTracked': instance.carbsTracked,
+      'reserved1': instance.reserved1,
       'fatGoal': instance.fatGoal,
-      'fatTracked': instance.fatTracked,
+      'reserved2': instance.reserved2,
       'proteinGoal': instance.proteinGoal,
-      'proteinTracked': instance.proteinTracked,
+      'reserved3': instance.reserved3,
     };

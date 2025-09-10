@@ -31,16 +31,6 @@ class AddTrackedDayUsecase {
         day, totalKcalGoal, totalCarbsGoal, totalFatGoal, totalProteinGoal);
   }
 
-  Future<void> addDayCaloriesTracked(
-      DateTime day, double caloriesTracked) async {
-    _trackedDayRepository.addDayTrackedCalories(day, caloriesTracked);
-  }
-
-  Future<void> removeDayCaloriesTracked(
-      DateTime day, double caloriesTracked) async {
-    await _trackedDayRepository.removeDayTrackedCalories(day, caloriesTracked);
-  }
-
   Future<void> updateDayMacroGoals(DateTime day,
       {double? carbsGoal, double? fatGoal, double? proteinGoal}) async {
     await _trackedDayRepository.updateDayMacroGoal(day,
@@ -57,17 +47,5 @@ class AddTrackedDayUsecase {
       {double? carbsAmount, double? fatAmount, double? proteinAmount}) async {
     await _trackedDayRepository.reduceDayMacroGoal(day,
         carbGoal: carbsAmount, fatGoal: fatAmount, proteinGoal: proteinAmount);
-  }
-
-  Future<void> addDayMacrosTracked(DateTime day,
-      {double? carbsTracked, double? fatTracked, double? proteinTracked}) async {
-    await _trackedDayRepository.addDayMacrosTracked(day,
-        carbsTracked: carbsTracked, fatTracked: fatTracked, proteinTracked: proteinTracked);
-  }
-
-  Future<void> removeDayMacrosTracked(DateTime day,
-      {double? carbsTracked, double? fatTracked, double? proteinTracked}) async {
-    await _trackedDayRepository.removeDayMacrosTracked(day,
-        carbsTracked: carbsTracked, fatTracked: fatTracked, proteinTracked: proteinTracked);
   }
 }

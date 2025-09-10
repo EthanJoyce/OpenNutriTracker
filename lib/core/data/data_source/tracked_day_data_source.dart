@@ -72,27 +72,6 @@ class TrackedDayDataSource {
     }
   }
 
-  Future<void> addDayCaloriesTracked(DateTime day, double addCalories) async {
-    log.fine('Adding new tracked day calories');
-    final updateDay = await getTrackedDay(day);
-
-    if (updateDay != null) {
-      updateDay.caloriesTracked += addCalories;
-      updateDay.save();
-    }
-  }
-
-  Future<void> decreaseDayCaloriesTracked(
-      DateTime day, double addCalories) async {
-    log.fine('Decreasing tracked day calories');
-    final updateDay = await getTrackedDay(day);
-
-    if (updateDay != null) {
-      updateDay.caloriesTracked -= addCalories;
-      updateDay.save();
-    }
-  }
-
   Future<void> updateDayMacroGoals(DateTime day,
       {double? carbsGoal, double? fatGoal, double? proteinGoal}) async {
     log.fine('Updating tracked day macro goals');
@@ -146,46 +125,6 @@ class TrackedDayDataSource {
       }
       if (proteinAmount != null) {
         updateDay.proteinGoal = (updateDay.proteinGoal ?? 0) - proteinAmount;
-      }
-      updateDay.save();
-    }
-  }
-
-  Future<void> addDayMacroTracked(DateTime day,
-      {double? carbsAmount, double? fatAmount, double? proteinAmount}) async {
-    log.fine('Adding new tracked day macro');
-    final updateDay = await getTrackedDay(day);
-
-    if (updateDay != null) {
-      if (carbsAmount != null) {
-        updateDay.carbsTracked = (updateDay.carbsTracked ?? 0) + carbsAmount;
-      }
-      if (fatAmount != null) {
-        updateDay.fatTracked = (updateDay.fatTracked ?? 0) + fatAmount;
-      }
-      if (proteinAmount != null) {
-        updateDay.proteinTracked =
-            (updateDay.proteinTracked ?? 0) + proteinAmount;
-      }
-      updateDay.save();
-    }
-  }
-
-  Future<void> removeDayMacroTracked(DateTime day,
-      {double? carbsAmount, double? fatAmount, double? proteinAmount}) async {
-    log.fine('Removing tracked day macro');
-    final updateDay = await getTrackedDay(day);
-
-    if (updateDay != null) {
-      if (carbsAmount != null) {
-        updateDay.carbsTracked = (updateDay.carbsTracked ?? 0) - carbsAmount;
-      }
-      if (fatAmount != null) {
-        updateDay.fatTracked = (updateDay.fatTracked ?? 0) - fatAmount;
-      }
-      if (proteinAmount != null) {
-        updateDay.proteinTracked =
-            (updateDay.proteinTracked ?? 0) - proteinAmount;
       }
       updateDay.save();
     }

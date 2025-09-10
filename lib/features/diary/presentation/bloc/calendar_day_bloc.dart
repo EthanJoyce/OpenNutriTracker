@@ -84,40 +84,11 @@ class CalendarDayBloc extends Bloc<CalendarDayEvent, CalendarDayState> {
     final newIntakeObject =
         await _updateIntakeUsecase.updateIntake(intakeId, fields);
     assert(newIntakeObject != null);
-    if (oldIntakeObject!.amount > newIntakeObject!.amount) {
-      // Amounts shrunk
-      await _addTrackedDayUsecase.removeDayCaloriesTracked(
-          day, oldIntakeObject.totalKcal - newIntakeObject.totalKcal);
-      await _addTrackedDayUsecase.removeDayMacrosTracked(day,
-          carbsTracked:
-              oldIntakeObject.totalCarbsGram - newIntakeObject.totalCarbsGram,
-          fatTracked:
-              oldIntakeObject.totalFatsGram - newIntakeObject.totalFatsGram,
-          proteinTracked: oldIntakeObject.totalProteinsGram -
-              newIntakeObject.totalProteinsGram);
-    } else if (newIntakeObject.amount > oldIntakeObject.amount) {
-      // Amounts gained
-      await _addTrackedDayUsecase.addDayCaloriesTracked(
-          day, newIntakeObject.totalKcal - oldIntakeObject.totalKcal);
-      await _addTrackedDayUsecase.addDayMacrosTracked(day,
-          carbsTracked:
-              newIntakeObject.totalCarbsGram - oldIntakeObject.totalCarbsGram,
-          fatTracked:
-              newIntakeObject.totalFatsGram - oldIntakeObject.totalFatsGram,
-          proteinTracked: newIntakeObject.totalProteinsGram -
-              oldIntakeObject.totalProteinsGram);
-    }
   }
 
   Future<void> deleteIntakeItem(
       BuildContext context, IntakeEntity intakeEntity, DateTime day) async {
     await _deleteIntakeUsecase.deleteIntake(intakeEntity);
-    await _addTrackedDayUsecase.removeDayCaloriesTracked(
-        day, intakeEntity.totalKcal);
-    await _addTrackedDayUsecase.removeDayMacrosTracked(day,
-        carbsTracked: intakeEntity.totalCarbsGram,
-        fatTracked: intakeEntity.totalFatsGram,
-        proteinTracked: intakeEntity.totalProteinsGram);
   }
 
   Future<void> deleteUserActivityItem(BuildContext context,

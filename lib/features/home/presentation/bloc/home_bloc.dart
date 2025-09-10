@@ -161,42 +161,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final newIntakeObject =
         await _updateIntakeUsecase.updateIntake(intakeId, fields);
     assert(newIntakeObject != null);
-    if (oldIntakeObject!.amount > newIntakeObject!.amount) {
-      // Amounts shrunk
-      await _addTrackedDayUseCase.removeDayCaloriesTracked(
-          dateTime, oldIntakeObject.totalKcal - newIntakeObject.totalKcal);
-      await _addTrackedDayUseCase.removeDayMacrosTracked(dateTime,
-          carbsTracked:
-              oldIntakeObject.totalCarbsGram - newIntakeObject.totalCarbsGram,
-          fatTracked:
-              oldIntakeObject.totalFatsGram - newIntakeObject.totalFatsGram,
-          proteinTracked: oldIntakeObject.totalProteinsGram -
-              newIntakeObject.totalProteinsGram);
-    } else if (newIntakeObject.amount > oldIntakeObject.amount) {
-      // Amounts gained
-      await _addTrackedDayUseCase.addDayCaloriesTracked(
-          dateTime, newIntakeObject.totalKcal - oldIntakeObject.totalKcal);
-      await _addTrackedDayUseCase.addDayMacrosTracked(dateTime,
-          carbsTracked:
-              newIntakeObject.totalCarbsGram - oldIntakeObject.totalCarbsGram,
-          fatTracked:
-              newIntakeObject.totalFatsGram - oldIntakeObject.totalFatsGram,
-          proteinTracked: newIntakeObject.totalProteinsGram -
-              oldIntakeObject.totalProteinsGram);
-    }
     _updateDiaryPage(dateTime);
   }
 
   Future<void> deleteIntakeItem(IntakeEntity intakeEntity) async {
     final dateTime = DateTime.now();
     await _deleteIntakeUsecase.deleteIntake(intakeEntity);
-    await _addTrackedDayUseCase.removeDayCaloriesTracked(
-        dateTime, intakeEntity.totalKcal);
-    await _addTrackedDayUseCase.removeDayMacrosTracked(dateTime,
-        carbsTracked: intakeEntity.totalCarbsGram,
-        fatTracked: intakeEntity.totalFatsGram,
-        proteinTracked: intakeEntity.totalProteinsGram);
-
     _updateDiaryPage(dateTime);
   }
 
