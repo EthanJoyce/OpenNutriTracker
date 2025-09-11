@@ -83,7 +83,7 @@ If `$ git status` shows .env as modified, you can ignore the changes by running 
 git update-index --assume-unchanged .env
 ```
 
-### Re-buildling
+### Re-building
 After adding API keys, you will need to re-build the project for the updates to propagate:
 
 ```bash
