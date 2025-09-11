@@ -74,6 +74,14 @@ You can acquire most of these by a simple signup procedure online.
 ### FoodData Central (USDA)
 1. Go to the following link and fill out the form: [https://fdc.nal.usda.gov/api-key-signup](https://fdc.nal.usda.gov/api-key-signup)
 2. Your API key will be sent to the provided email
+3. Populate your API key in the .env file
+
+#### Helpful tip
+If `$ git status` shows .env as modified, you can ignore the changes by running the following command:
+
+```bash
+git update-index --assume-unchanged .env
+```
 
 ### Re-buildling
 After adding API keys, you will need to re-build the project for the updates to propagate:
