@@ -59,7 +59,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
               return Navigator.of(context).pushReplacementNamed(
                   NavigationOptions.mealDetailRoute,
                   arguments: MealDetailScreenArguments(state.product,
-                      _intakeTypeEntity, _day, state.usesImperialUnits));
+                      _intakeTypeEntity, _day, state.usesImperialUnits, /*initialQuantity=*/"", /*initialUnit=*/""));
             }
           });
         } else if (state is ScannerFailedState) {

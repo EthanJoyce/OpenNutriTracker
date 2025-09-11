@@ -133,10 +133,11 @@ class _AddMealScreenState extends State<AddMealScreen>
                                         itemBuilder: (context, index) {
                                           return MealItemCard(
                                             day: _day,
-                                            mealEntity: state.products[index],
                                             addMealType: _mealType,
                                             usesImperialUnits:
                                                 state.usesImperialUnits,
+                                            intakeEntity: null,
+                                            mealEntity: state.products[index],
                                           );
                                         }))
                                 : const NoResultsWidget();
@@ -178,10 +179,11 @@ class _AddMealScreenState extends State<AddMealScreen>
                                         itemBuilder: (context, index) {
                                           return MealItemCard(
                                             day: _day,
-                                            mealEntity: state.food[index],
                                             addMealType: _mealType,
                                             usesImperialUnits:
                                                 state.usesImperialUnits,
+                                            intakeEntity: null,
+                                            mealEntity: state.food[index],
                                           );
                                         }))
                                 : const NoResultsWidget();
@@ -212,18 +214,19 @@ class _AddMealScreenState extends State<AddMealScreen>
                                 child: CircularProgressIndicator(),
                               );
                             } else if (state is RecentMealLoadedState) {
-                              return state.recentMeals.isNotEmpty
+                              return state.recentIntake.isNotEmpty
                                   ? Flexible(
                                       child: ListView.builder(
-                                          itemCount: state.recentMeals.length,
+                                          itemCount: state.recentIntake.length,
                                           itemBuilder: (context, index) {
                                             return MealItemCard(
                                               day: _day,
-                                              mealEntity:
-                                                  state.recentMeals[index],
                                               addMealType: _mealType,
                                               usesImperialUnits:
                                                   state.usesImperialUnits,
+                                              intakeEntity:
+                                                  state.recentIntake[index],
+                                              mealEntity: null,
                                             );
                                           }))
                                   : const NoResultsWidget();

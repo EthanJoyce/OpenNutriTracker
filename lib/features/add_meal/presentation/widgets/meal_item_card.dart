@@ -5,6 +5,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:opennutritracker/core/presentation/widgets/meal_value_unit_text.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/core/utils/navigation_options.dart';
+import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
 import 'package:opennutritracker/features/add_meal/presentation/add_meal_type.dart';
 import 'package:opennutritracker/features/meal_detail/meal_detail_screen.dart';
@@ -12,15 +13,19 @@ import 'package:opennutritracker/features/meal_detail/meal_detail_screen.dart';
 class MealItemCard extends StatelessWidget {
   final DateTime day;
   final AddMealType addMealType;
-  final MealEntity mealEntity;
   final bool usesImperialUnits;
+
+  // Either or can be used to populate the widget
+  final IntakeEntity? intakeEntity;
+  final MealEntity? mealEntity;
 
   const MealItemCard(
       {super.key,
       required this.day,
-      required this.mealEntity,
       required this.addMealType,
-      required this.usesImperialUnits});
+      required this.usesImperialUnits,
+      required this.intakeEntity,
+      required this.mealEntity});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +40,7 @@ class MealItemCard extends StatelessWidget {
           height: 100,
           child: Center(
               child: ListTile(
-            leading: mealEntity.thumbnailImageUrl != null
+            leading: _getMealEntity()?.thumbnailImageUrl != null
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(16),
                     child: CachedNetworkImage(
@@ -43,7 +48,7 @@ class MealItemCard extends StatelessWidget {
                       fit: BoxFit.cover,
                       width: 60,
                       height: 60,
-                      imageUrl: mealEntity.thumbnailImageUrl ?? "",
+                      imageUrl: _getMealEntity()!.thumbnailImageUrl ?? "",
                     ))
                 : ClipRRect(
                     borderRadius: BorderRadius.circular(16),
@@ -55,12 +60,12 @@ class MealItemCard extends StatelessWidget {
                   ),
             title: AutoSizeText.rich(
                 TextSpan(
-                    text: mealEntity.name ?? "?",
+                    text: _getMealEntity()?.name ?? "?",
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onSurface),
                     children: [
                       TextSpan(
-                          text: ' ${mealEntity.brands ?? ""}',
+                          text: ' ${_getMealEntity()?.brands ?? ""}',
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium
@@ -73,10 +78,12 @@ class MealItemCard extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis),
-            subtitle: mealEntity.servingQuantity != null
+            subtitle: ((intakeEntity != null) || (mealEntity?.servingQuantity != null))
                 ? MealValueUnitText(
-                    value: mealEntity.servingQuantity ?? 0,
-                    meal: mealEntity,
+                    value: intakeEntity != null ?
+                                intakeEntity!.amount :
+                                mealEntity?.servingQuantity ?? 0,
+                    meal: _getMealEntity()!,
                     usesImperialUnits: usesImperialUnits)
                 : const SizedBox(),
             trailing: IconButton(
@@ -93,9 +100,25 @@ class MealItemCard extends StatelessWidget {
     );
   }
 
+  MealEntity? _getMealEntity() {
+    if (intakeEntity != null) {
+      return intakeEntity!.meal;
+    } else {
+      return mealEntity;
+    }
+  }
+
   void _onItemPressed(BuildContext context) {
+    String initialQuantity = intakeEntity != null ?
+                                // Show 2 decimal places only if amount has a decimal component
+                                // I.e 2.374 => 2.37, while 2.00 => 2
+                                ((intakeEntity!.amount.floor() == intakeEntity!.amount)
+                                    ? intakeEntity!.amount.toStringAsFixed(0)
+                                    : intakeEntity!.amount.toStringAsFixed(2))
+                                : "";
+    String initialUnit = intakeEntity != null ? intakeEntity!.unit : "";
     Navigator.of(context).pushNamed(NavigationOptions.mealDetailRoute,
         arguments: MealDetailScreenArguments(
-            mealEntity, addMealType.getIntakeType(), day, usesImperialUnits));
+            _getMealEntity()!, addMealType.getIntakeType(), day, usesImperialUnits, initialQuantity, initialUnit));
   }
 }

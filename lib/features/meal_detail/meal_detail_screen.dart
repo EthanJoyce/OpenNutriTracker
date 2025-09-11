@@ -45,8 +45,8 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
   final quantityTextController = TextEditingController();
   late bool _usesImperialUnits;
 
-  String _initialUnit = "";
   String _initialQuantity = "";
+  String _initialUnit = "";
 
   @override
   void initState() {
@@ -63,6 +63,8 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
     _day = args.day;
     intakeTypeEntity = args.intakeTypeEntity;
     _usesImperialUnits = args.usesImperialUnits;
+    _initialQuantity = args.initialQuantity;
+    _initialUnit = args.initialUnit;
 
     // Set initial unit
     if (_initialUnit == "") {
@@ -80,25 +82,23 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
       } else {
         _initialUnit = UnitDropdownItem.gml.toString();
       }
-      _mealDetailBloc
-          .add(UpdateKcalEvent(meal: meal, selectedUnit: _initialUnit));
     }
+    _mealDetailBloc
+        .add(UpdateKcalEvent(meal: meal, selectedUnit: _initialUnit));
 
     // Set initial quantity
     if (_initialQuantity == "") {
       if (meal.hasServingValues) {
         _initialQuantity = "1";
-        quantityTextController.text = "1";
       } else if (_usesImperialUnits) {
         _initialQuantity = _initialQuantityImperial;
-        quantityTextController.text = _initialQuantityImperial;
       } else {
         _initialQuantity = _initialQuantityMetric;
-        quantityTextController.text = _initialQuantityMetric;
       }
-      _mealDetailBloc.add(UpdateKcalEvent(
-          meal: meal, totalQuantity: quantityTextController.text));
     }
+    quantityTextController.text = _initialQuantity;
+    _mealDetailBloc.add(UpdateKcalEvent(
+        meal: meal, totalQuantity: quantityTextController.text));
 
     super.didChangeDependencies();
   }
@@ -303,7 +303,9 @@ class MealDetailScreenArguments {
   final IntakeTypeEntity intakeTypeEntity;
   final DateTime day;
   final bool usesImperialUnits;
+  final String initialQuantity;
+  final String initialUnit;
 
   MealDetailScreenArguments(
-      this.mealEntity, this.intakeTypeEntity, this.day, this.usesImperialUnits);
+      this.mealEntity, this.intakeTypeEntity, this.day, this.usesImperialUnits, this.initialQuantity, this.initialUnit);
 }

@@ -5,7 +5,6 @@ import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
 import 'package:opennutritracker/core/domain/entity/intake_type_entity.dart';
 import 'package:opennutritracker/core/domain/usecase/get_config_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_intake_usecase.dart';
-import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
 
 part 'recent_meal_event.dart';
 
@@ -24,19 +23,18 @@ class RecentMealBloc extends Bloc<RecentMealEvent, RecentMealState> {
       try {
         final config = await _getConfigUsecase.getConfig();
         final searchString = (event.searchString).toLowerCase();
-        final recentIntake = searchString == "" ?
+        final recentIntake = searchString.isEmpty ?
                                 await _getIntakeUsecase.getRecentIntakesOfType(event.intakeType) :
                                 await _getIntakeUsecase.getRecentIntake();
 
         if (searchString.isEmpty) {
           emit(RecentMealLoadedState(
-              recentMeals: recentIntake.map((intake) => intake.meal).toList(),
+              recentIntake: recentIntake,
               usesImperialUnits: config.usesImperialUnits));
         } else {
           emit(RecentMealLoadedState(
-              recentMeals: recentIntake
+              recentIntake: recentIntake
                   .where(matchesSearchString(searchString))
-                  .map((intake) => intake.meal)
                   .toList(),
               usesImperialUnits: config.usesImperialUnits));
         }

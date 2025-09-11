@@ -246,7 +246,7 @@ class _EditMealScreenState extends State<EditMealScreen> {
           NavigationOptions.mealDetailRoute,
           ModalRoute.withName(NavigationOptions.addMealRoute),
           arguments: MealDetailScreenArguments(
-              newMealEntity, _intakeTypeEntity, _day, usesImperialUnits));
+              newMealEntity, _intakeTypeEntity, _day, usesImperialUnits, /*initialQuantity=*/"", /*initialUnit=*/""));
     } catch (exception, stacktrace) {
       log.warning("Error while creating new meal entity");
       Sentry.captureException(exception, stackTrace: stacktrace);
