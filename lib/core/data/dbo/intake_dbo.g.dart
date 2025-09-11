@@ -82,4 +82,5 @@ const _$IntakeTypeDBOEnumMap = {
   IntakeTypeDBO.lunch: 'lunch',
   IntakeTypeDBO.dinner: 'dinner',
   IntakeTypeDBO.snack: 'snack',
+  IntakeTypeDBO.invalid: 'invalid',
 };

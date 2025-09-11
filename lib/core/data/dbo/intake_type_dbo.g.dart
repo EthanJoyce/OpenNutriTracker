@@ -21,6 +21,8 @@ class IntakeTypeDBOAdapter extends TypeAdapter<IntakeTypeDBO> {
         return IntakeTypeDBO.dinner;
       case 3:
         return IntakeTypeDBO.snack;
+      case 4:
+        return IntakeTypeDBO.invalid;
       default:
         return IntakeTypeDBO.breakfast;
     }
@@ -40,6 +42,9 @@ class IntakeTypeDBOAdapter extends TypeAdapter<IntakeTypeDBO> {
         break;
       case IntakeTypeDBO.snack:
         writer.writeByte(3);
+        break;
+      case IntakeTypeDBO.invalid:
+        writer.writeByte(4);
         break;
     }
   }

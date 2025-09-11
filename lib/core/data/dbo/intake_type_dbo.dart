@@ -12,7 +12,9 @@ enum IntakeTypeDBO {
   @HiveField(2)
   dinner,
   @HiveField(3)
-  snack;
+  snack,
+  @HiveField(4)
+  invalid;
 
   factory IntakeTypeDBO.fromIntakeTypeEntity(IntakeTypeEntity entityType) {
     IntakeTypeDBO intakeDBOType;
@@ -28,6 +30,9 @@ enum IntakeTypeDBO {
         break;
       case IntakeTypeEntity.snack:
         intakeDBOType = IntakeTypeDBO.snack;
+        break;
+      case IntakeTypeEntity.invalid:
+        intakeDBOType = IntakeTypeDBO.invalid;
         break;
     }
     return intakeDBOType;

@@ -6,7 +6,8 @@ enum IntakeTypeEntity {
   breakfast,
   lunch,
   dinner,
-  snack;
+  snack,
+  invalid;
 
   factory IntakeTypeEntity.fromIntakeTypeDBO(IntakeTypeDBO intakeTypeDBO) {
     IntakeTypeEntity intakeTypeEntity;
@@ -22,6 +23,9 @@ enum IntakeTypeEntity {
         break;
       case IntakeTypeDBO.snack:
         intakeTypeEntity = IntakeTypeEntity.snack;
+        break;
+      case IntakeTypeDBO.invalid:
+        intakeTypeEntity = IntakeTypeEntity.invalid;
         break;
     }
     return intakeTypeEntity;
@@ -41,6 +45,10 @@ enum IntakeTypeEntity {
         break;
       case IntakeTypeEntity.snack:
         icon = CustomIcons.food_apple_outline;
+        break;
+      case IntakeTypeEntity.invalid:
+        icon = Icons.bug_report;
+        break;
     }
     return icon;
   }
