@@ -171,9 +171,7 @@ class MealDetailBottomSheet extends StatelessWidget {
     locator<DiaryBloc>().add(const LoadDiaryYearEvent());
     locator<CalendarDayBloc>().add(RefreshCalendarDayEvent());
 
-    // Show snackbar and return to dashboard
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(S.of(context).infoAddedIntakeLabel)));
+    // Return to dashboard
     Navigator.of(context)
         .popUntil(ModalRoute.withName(NavigationOptions.mainRoute));
   }
