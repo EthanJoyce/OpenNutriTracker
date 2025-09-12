@@ -63,42 +63,48 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
     _day = args.day;
     intakeTypeEntity = args.intakeTypeEntity;
     _usesImperialUnits = args.usesImperialUnits;
-    _initialQuantity = args.initialQuantity;
-    _initialUnit = args.initialUnit;
 
     // Set initial unit
     if (_initialUnit == "") {
-      if (meal.hasServingValues) {
-        _initialUnit = UnitDropdownItem.serving.toString();
-      } else if (meal.isLiquid) {
-        _initialUnit = _usesImperialUnits
-            ? UnitDropdownItem.flOz.toString()
-            : UnitDropdownItem.ml.toString();
-      } else if (meal.isSolid) {
-        _initialUnit = _usesImperialUnits
-            ? UnitDropdownItem.oz.toString()
-
-            : UnitDropdownItem.g.toString();
+      if (args.initialUnit.isNotEmpty) {
+        _initialUnit = args.initialUnit;
       } else {
-        _initialUnit = UnitDropdownItem.gml.toString();
+        if (meal.hasServingValues) {
+          _initialUnit = UnitDropdownItem.serving.toString();
+        } else if (meal.isLiquid) {
+          _initialUnit = _usesImperialUnits
+              ? UnitDropdownItem.flOz.toString()
+              : UnitDropdownItem.ml.toString();
+        } else if (meal.isSolid) {
+          _initialUnit = _usesImperialUnits
+              ? UnitDropdownItem.oz.toString()
+
+              : UnitDropdownItem.g.toString();
+        } else {
+          _initialUnit = UnitDropdownItem.gml.toString();
+        }
       }
+      _mealDetailBloc
+          .add(UpdateKcalEvent(meal: meal, selectedUnit: _initialUnit));
     }
-    _mealDetailBloc
-        .add(UpdateKcalEvent(meal: meal, selectedUnit: _initialUnit));
 
     // Set initial quantity
     if (_initialQuantity == "") {
-      if (meal.hasServingValues) {
-        _initialQuantity = "1";
-      } else if (_usesImperialUnits) {
-        _initialQuantity = _initialQuantityImperial;
+      if (args.initialQuantity.isNotEmpty) {
+        _initialQuantity = args.initialQuantity;
       } else {
-        _initialQuantity = _initialQuantityMetric;
+        if (meal.hasServingValues) {
+          _initialQuantity = "1";
+        } else if (_usesImperialUnits) {
+          _initialQuantity = _initialQuantityImperial;
+        } else {
+          _initialQuantity = _initialQuantityMetric;
+        }
       }
+      quantityTextController.text = _initialQuantity;
+      _mealDetailBloc.add(UpdateKcalEvent(
+          meal: meal, totalQuantity: quantityTextController.text));
     }
-    quantityTextController.text = _initialQuantity;
-    _mealDetailBloc.add(UpdateKcalEvent(
-        meal: meal, totalQuantity: quantityTextController.text));
 
     super.didChangeDependencies();
   }
