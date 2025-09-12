@@ -12,19 +12,11 @@ class TrackedDayDBO extends HiveObject {
   @HiveField(1)
   double calorieGoal;
   @HiveField(2)
-  double reserved0 = 0;
-  @HiveField(3)
   double? carbsGoal;
-  @HiveField(4)
-  double? reserved1 = 0;
-  @HiveField(5)
+  @HiveField(3)
   double? fatGoal;
-  @HiveField(6)
-  double? reserved2 = 0;
-  @HiveField(7)
+  @HiveField(4)
   double? proteinGoal;
-  @HiveField(8)
-  double? reserved3 = 0;
 
   TrackedDayDBO(
       {required this.day,
