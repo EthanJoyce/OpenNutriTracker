@@ -116,7 +116,7 @@ class MealItemCard extends StatelessWidget {
                                     ? intakeEntity!.amount.toStringAsFixed(0)
                                     : intakeEntity!.amount.toStringAsFixed(2))
                                 : "";
-    String initialUnit = intakeEntity != null ? intakeEntity!.unit : "";
+    String initialUnit = intakeEntity?.meal.servingUnit ?? "";
     Navigator.of(context).pushNamed(NavigationOptions.mealDetailRoute,
         arguments: MealDetailScreenArguments(
             _getMealEntity()!, addMealType.getIntakeType(), day, usesImperialUnits, initialQuantity, initialUnit));
