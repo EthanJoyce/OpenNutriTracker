@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:opennutritracker/core/presentation/widgets/meal_value_unit_text.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
 
 class MealTitleExpanded extends StatelessWidget {

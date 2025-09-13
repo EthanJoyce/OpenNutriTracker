@@ -6,7 +6,6 @@ import 'package:logging/logging.dart';
 import 'package:opennutritracker/core/domain/entity/intake_type_entity.dart';
 import 'package:opennutritracker/core/utils/calc/unit_calc.dart';
 import 'package:opennutritracker/core/utils/custom_text_input_formatter.dart';
-import 'package:opennutritracker/core/utils/extensions.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/core/utils/navigation_options.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
@@ -278,17 +277,18 @@ class _EditMealScreenState extends State<EditMealScreen> {
     }
   }
 
-  String _convertToMetric(String value, String unit) {
-    final double quantityValue = double.tryParse(value) ?? 0.0;
-    switch (unit) {
-      case 'g':
-        return (UnitCalc.ozToG(quantityValue)).toStringAsFixed(2);
-      case 'ml':
-        return (UnitCalc.flOzToMl(quantityValue)).toStringAsFixed(2);
-      default:
-        return value;
-    }
-  }
+  // unused
+  //String _convertToMetric(String value, String unit) {
+  //  final double quantityValue = double.tryParse(value) ?? 0.0;
+  //  switch (unit) {
+  //    case 'g':
+  //      return (UnitCalc.ozToG(quantityValue)).toStringAsFixed(2);
+  //    case 'ml':
+  //      return (UnitCalc.flOzToMl(quantityValue)).toStringAsFixed(2);
+  //    default:
+  //      return value;
+  //  }
+  //}
 
   String toPrettyString(double? value) {
     if (value == null) {
