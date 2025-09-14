@@ -110,7 +110,7 @@ class CalendarDayBloc extends Bloc<CalendarDayEvent, CalendarDayState> {
   }
 
   Future<void> deleteIntakeItem(
-      BuildContext context, IntakeEntity intakeEntity, DateTime day) async {
+      BuildContext context, IntakeEntity intakeEntity) async {
     await _deleteIntakeUsecase.deleteIntake(intakeEntity);
   }
 

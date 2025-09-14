@@ -23,7 +23,7 @@ class IntakeVerticalList extends StatefulWidget {
   final AddMealType addMealType;
   final List<IntakeEntity> intakeList;
   final bool usesImperialUnits;
-  final Function(IntakeEntity intake, TrackedDayEntity? trackedDayEntity)
+  final Function(IntakeEntity intake)
       onDeleteIntakeCallback;
   final Function(BuildContext, IntakeEntity)? onItemLongPressedCallback;
   final Function(bool)? onItemDragCallback;
@@ -137,8 +137,7 @@ class _IntakeVerticalListState extends State<IntakeVerticalList> {
                               builder: (context) => const DeleteAllDialog());
                           if (shouldDeleteIntakes != null) {
                             for (IntakeEntity intake in widget.intakeList) {
-                              widget.onDeleteIntakeCallback(
-                                  intake, widget.trackedDayEntity);
+                              widget.onDeleteIntakeCallback(intake);
                             }
                             break;
                           }

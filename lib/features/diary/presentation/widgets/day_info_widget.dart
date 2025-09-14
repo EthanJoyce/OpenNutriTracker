@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
 import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
 import 'package:opennutritracker/core/domain/entity/tracked_day_entity.dart';
@@ -28,7 +27,7 @@ class DayInfoWidget extends StatelessWidget {
   final bool usesImperialUnits;
   final Function(BuildContext context, IntakeEntity intakeEntity, bool usesImperialUnits, TrackedDayEntity? trackedDayEntity)
       onUpdateIntake;
-  final Function(IntakeEntity intake, TrackedDayEntity? trackedDayEntity)
+  final Function(IntakeEntity intake)
       onDeleteIntake;
   final Function(UserActivityEntity userActivityEntity,
       TrackedDayEntity? trackedDayEntity) onDeleteActivity;
@@ -36,6 +35,7 @@ class DayInfoWidget extends StatelessWidget {
       AddMealType? type) onCopyIntake;
   final Function(UserActivityEntity userActivityEntity,
       TrackedDayEntity? trackedDayEntity) onCopyActivity;
+  final Function(bool isDragging) onDragIntake;
 
   const DayInfoWidget({
     super.key,
@@ -53,6 +53,7 @@ class DayInfoWidget extends StatelessWidget {
     required this.onDeleteActivity,
     required this.onCopyIntake,
     required this.onCopyActivity,
+    required this.onDragIntake,
   });
 
   @override
@@ -88,7 +89,7 @@ class DayInfoWidget extends StatelessWidget {
                   day: selectedDay,
                   title: S.of(context).activityLabel,
                   userActivityList: userActivities,
-                  onItemLongPressedCallback: onActivityItemLongPressed)
+                  onItemLongPressedCallback: _onActivityItemLongPressed)
               : const SizedBox.shrink(),
             IntakeVerticalList(
               day: selectedDay,
@@ -96,9 +97,10 @@ class DayInfoWidget extends StatelessWidget {
               listIcon: Icons.bakery_dining_outlined,
               addMealType: AddMealType.breakfastType,
               intakeList: breakfastIntake,
-              onItemTappedCallback: onUpdateIntake,
               onDeleteIntakeCallback: onDeleteIntake,
-              onItemLongPressedCallback: onIntakeItemLongPressed,
+              onItemDragCallback: onDragIntake,
+              onItemTappedCallback: onUpdateIntake,
+              //onItemLongPressedCallback: onIntakeItemLongPressed,
               onCopyIntakeCallback:
                   DateUtils.isSameDay(selectedDay, DateTime.now())
                       ? null
@@ -107,19 +109,21 @@ class DayInfoWidget extends StatelessWidget {
               trackedDayEntity: trackedDayEntity,
             ),
             IntakeVerticalList(
+              //  TODO update these others as well
               day: selectedDay,
               title: S.of(context).lunchLabel,
               listIcon: Icons.lunch_dining_outlined,
               addMealType: AddMealType.lunchType,
               intakeList: lunchIntake,
-              onItemTappedCallback: onUpdateIntake,
               onDeleteIntakeCallback: onDeleteIntake,
-              onItemLongPressedCallback: onIntakeItemLongPressed,
-              usesImperialUnits: usesImperialUnits,
+              onItemDragCallback: onDragIntake,
+              onItemTappedCallback: onUpdateIntake,
+              //onItemLongPressedCallback: onIntakeItemLongPressed,
               onCopyIntakeCallback:
                   DateUtils.isSameDay(selectedDay, DateTime.now())
                       ? null
                       : onCopyIntake,
+              usesImperialUnits: usesImperialUnits,
               trackedDayEntity: trackedDayEntity,
             ),
             IntakeVerticalList(
@@ -128,14 +132,16 @@ class DayInfoWidget extends StatelessWidget {
               listIcon: Icons.dinner_dining_outlined,
               addMealType: AddMealType.dinnerType,
               intakeList: dinnerIntake,
-              onItemTappedCallback: onUpdateIntake,
               onDeleteIntakeCallback: onDeleteIntake,
-              onItemLongPressedCallback: onIntakeItemLongPressed,
+              onItemDragCallback: onDragIntake,
+              onItemTappedCallback: onUpdateIntake,
+              //onItemLongPressedCallback: onIntakeItemLongPressed,
               onCopyIntakeCallback:
                   DateUtils.isSameDay(selectedDay, DateTime.now())
                       ? null
                       : onCopyIntake,
               usesImperialUnits: usesImperialUnits,
+              trackedDayEntity: trackedDayEntity,
             ),
             IntakeVerticalList(
               day: selectedDay,
@@ -143,17 +149,18 @@ class DayInfoWidget extends StatelessWidget {
               listIcon: CustomIcons.food_apple_outline,
               addMealType: AddMealType.snackType,
               intakeList: snackIntake,
-              onItemTappedCallback: onUpdateIntake,
               onDeleteIntakeCallback: onDeleteIntake,
-              onItemLongPressedCallback: onIntakeItemLongPressed,
-              usesImperialUnits: usesImperialUnits,
+              onItemDragCallback: onDragIntake,
+              onItemTappedCallback: onUpdateIntake,
+              //onItemLongPressedCallback: onIntakeItemLongPressed,
               onCopyIntakeCallback:
                   DateUtils.isSameDay(selectedDay, DateTime.now())
                       ? null
                       : onCopyIntake,
+              usesImperialUnits: usesImperialUnits,
               trackedDayEntity: trackedDayEntity,
             ),
-            const SizedBox(height: 16.0)
+            const SizedBox(height: 16.0),
           ],
         )
       ],
@@ -178,47 +185,49 @@ class DayInfoWidget extends StatelessWidget {
     return (caloriesTracked, carbsTracked, fatTracked, proteinTracked);
   }
 
-  void showCopyOrDeleteIntakeDialog(
-      BuildContext context, IntakeEntity intakeEntity) async {
-    final copyOrDelete = await showDialog<bool>(
-        context: context, builder: (context) => const CopyOrDeleteDialog());
-    if (context.mounted) {
-      if (copyOrDelete != null && !copyOrDelete) {
-        showDeleteIntakeDialog(context, intakeEntity);
-      } else if (copyOrDelete != null && copyOrDelete) {
-        showCopyDialog(context, intakeEntity);
-      }
-    }
-  }
+// TODO: re-enable long pressing (currently interferes with drag & drop)
+//
+//  void _showCopyOrDeleteIntakeDialog(
+//      BuildContext context, IntakeEntity intakeEntity) async {
+//    final copyOrDelete = await showDialog<bool>(
+//        context: context, builder: (context) => const CopyOrDeleteDialog());
+//    if (context.mounted) {
+//      if (copyOrDelete != null && !copyOrDelete) {
+//        _showDeleteIntakeDialog(context, intakeEntity);
+//      } else if (copyOrDelete != null && copyOrDelete) {
+//        _showCopyDialog(context, intakeEntity);
+//      }
+//    }
+//  }
+//
+//  void _showCopyDialog(BuildContext context, IntakeEntity intakeEntity) async {
+//    const copyDialog = CopyDialog();
+//    final selectedMealType = await showDialog<AddMealType>(
+//        context: context, builder: (context) => copyDialog);
+//    if (selectedMealType != null) {
+//      onCopyIntake(intakeEntity, null, selectedMealType);
+//    }
+//  }
+//
+//  void _showDeleteIntakeDialog(
+//      BuildContext context, IntakeEntity intakeEntity) async {
+//    final shouldDeleteIntake = await showDialog<bool>(
+//        context: context, builder: (context) => const DeleteDialog());
+//    if (shouldDeleteIntake != null) {
+//      onDeleteIntake(intakeEntity);
+//    }
+//  }
+//
+//  void _onIntakeItemLongPressed(
+//      BuildContext context, IntakeEntity intakeEntity) async {
+//    if (DateUtils.isSameDay(selectedDay, DateTime.now())) {
+//      _showDeleteIntakeDialog(context, intakeEntity);
+//    } else {
+//      _showCopyOrDeleteIntakeDialog(context, intakeEntity);
+//    }
+//  }
 
-  void showCopyDialog(BuildContext context, IntakeEntity intakeEntity) async {
-    const copyDialog = CopyDialog();
-    final selectedMealType = await showDialog<AddMealType>(
-        context: context, builder: (context) => copyDialog);
-    if (selectedMealType != null) {
-      onCopyIntake(intakeEntity, null, selectedMealType);
-    }
-  }
-
-  void showDeleteIntakeDialog(
-      BuildContext context, IntakeEntity intakeEntity) async {
-    final shouldDeleteIntake = await showDialog<bool>(
-        context: context, builder: (context) => const DeleteDialog());
-    if (shouldDeleteIntake != null) {
-      onDeleteIntake(intakeEntity, trackedDayEntity);
-    }
-  }
-
-  void onIntakeItemLongPressed(
-      BuildContext context, IntakeEntity intakeEntity) async {
-    if (DateUtils.isSameDay(selectedDay, DateTime.now())) {
-      showDeleteIntakeDialog(context, intakeEntity);
-    } else {
-      showCopyOrDeleteIntakeDialog(context, intakeEntity);
-    }
-  }
-
-  void onActivityItemLongPressed(
+  void _onActivityItemLongPressed(
       BuildContext context, UserActivityEntity activityEntity) async {
     final shouldDeleteActivity = await showDialog<bool>(
         context: context, builder: (context) => const DeleteDialog());

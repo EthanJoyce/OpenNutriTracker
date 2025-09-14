@@ -6,6 +6,7 @@ import 'package:opennutritracker/core/domain/entity/intake_type_entity.dart';
 import 'package:opennutritracker/core/domain/entity/tracked_day_entity.dart';
 import 'package:opennutritracker/core/domain/entity/user_activity_entity.dart';
 import 'package:opennutritracker/core/presentation/widgets/edit_dialog.dart';
+import 'package:opennutritracker/core/presentation/widgets/delete_dialog.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/features/add_meal/presentation/add_meal_type.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/calendar_day_bloc.dart';
@@ -28,6 +29,8 @@ class _DiaryPageState extends State<DiaryPage> with WidgetsBindingObserver {
   late DiaryBloc _diaryBloc;
   late CalendarDayBloc _calendarDayBloc;
   late MealDetailBloc _mealDetailBloc;
+
+  bool _isDragging = false;
 
   static const _calendarDurationDays = Duration(days: 356);
   final _currentDate = DateTime.now();
@@ -81,47 +84,80 @@ class _DiaryPageState extends State<DiaryPage> with WidgetsBindingObserver {
 
   Widget _getLoadedContent(BuildContext context,
       Map<String, TrackedDayEntity> trackedDaysMap, bool showActivityTracker, bool usesImperialUnits) {
-    return ListView(
-      children: [
-        DiaryTableCalendar(
-          trackedDaysMap: trackedDaysMap,
-          onDateSelected: _onDateSelected,
-          calendarDurationDays: _calendarDurationDays,
-          currentDate: _currentDate,
-          selectedDate: _selectedDate,
-          focusedDate: _focusedDate,
-        ),
-        const SizedBox(height: 16.0),
-        BlocBuilder<CalendarDayBloc, CalendarDayState>(
-          bloc: _calendarDayBloc,
-          builder: (context, state) {
-            if (state is CalendarDayInitial) {
-              _calendarDayBloc.add(LoadCalendarDayEvent(_selectedDate));
-            } else if (state is CalendarDayLoading) {
-              return _getLoadingContent();
-            } else if (state is CalendarDayLoaded) {
-              return DayInfoWidget(
-                showActivityTracker: showActivityTracker,
-                trackedDayEntity: state.trackedDayEntity,
-                selectedDay: _selectedDate,
-                userActivities: state.userActivityList,
-                breakfastIntake: state.breakfastIntakeList,
-                lunchIntake: state.lunchIntakeList,
-                dinnerIntake: state.dinnerIntakeList,
-                snackIntake: state.snackIntakeList,
-                onUpdateIntake: _onUpdateIntakeItem,
-                onDeleteIntake: _onDeleteIntakeItem,
-                onDeleteActivity: _onDeleteActivityItem,
-                onCopyIntake: _onCopyIntakeItem,
-                onCopyActivity: _onCopyActivityItem,
-                usesImperialUnits: usesImperialUnits,
-              );
-            }
-            return const SizedBox();
-          },
+    return Stack(children: [
+      ListView(
+        children: [
+          DiaryTableCalendar(
+            trackedDaysMap: trackedDaysMap,
+            onDateSelected: _onDateSelected,
+            calendarDurationDays: _calendarDurationDays,
+            currentDate: _currentDate,
+            selectedDate: _selectedDate,
+            focusedDate: _focusedDate,
+          ),
+          const SizedBox(height: 16.0),
+          BlocBuilder<CalendarDayBloc, CalendarDayState>(
+            bloc: _calendarDayBloc,
+            builder: (context, state) {
+              if (state is CalendarDayInitial) {
+                _calendarDayBloc.add(LoadCalendarDayEvent(_selectedDate));
+              } else if (state is CalendarDayLoading) {
+                return _getLoadingContent();
+              } else if (state is CalendarDayLoaded) {
+                return DayInfoWidget(
+                  showActivityTracker: showActivityTracker,
+                  trackedDayEntity: state.trackedDayEntity,
+                  selectedDay: _selectedDate,
+                  userActivities: state.userActivityList,
+                  breakfastIntake: state.breakfastIntakeList,
+                  lunchIntake: state.lunchIntakeList,
+                  dinnerIntake: state.dinnerIntakeList,
+                  snackIntake: state.snackIntakeList,
+                  onUpdateIntake: _onUpdateIntakeItem,
+                  onDeleteIntake: _onDeleteIntakeItem,
+                  onDeleteActivity: _onDeleteActivityItem,
+                  onCopyIntake: _onCopyIntakeItem,
+                  onCopyActivity: _onCopyActivityItem,
+                  onDragIntake: _onDragIntakeItem,
+                  usesImperialUnits: usesImperialUnits,
+                );
+              }
+              return const SizedBox();
+            },
+          )
+        ]
+      ),
+      Align(
+        alignment: Alignment.bottomCenter,
+        child: Visibility(
+            visible: _isDragging,
+            child: Container(
+              height: 70,
+              color: Theme.of(context).colorScheme.error
+                ..withValues(alpha: 0.3),
+              child: DragTarget<IntakeEntity>(
+                onAcceptWithDetails: (data) {
+                  _confirmDelete(context, data.data);
+                },
+                onLeave: (data) {
+                  setState(() {
+                    _isDragging = false;
+                  });
+                },
+                builder: (context, candidateData, rejectedData) {
+                  return const Center(
+                    child: Icon(
+                      Icons.delete_outline,
+                      size: 36,
+                      color: Colors.white,
+                    ),
+                  );
+                },
+              ),
+            )
         )
-      ],
-    );
+      ),
+    ]);
   }
 
   void _onUpdateIntakeItem(BuildContext context, IntakeEntity intakeEntity,
@@ -144,9 +180,9 @@ class _DiaryPageState extends State<DiaryPage> with WidgetsBindingObserver {
   }
 
   void _onDeleteIntakeItem(
-      IntakeEntity intakeEntity, TrackedDayEntity? trackedDayEntity) async {
+      IntakeEntity intakeEntity) async {
     await _calendarDayBloc.deleteIntakeItem(
-        context, intakeEntity, trackedDayEntity?.day ?? DateTime.now());
+        context, intakeEntity);
     _diaryBloc.add(const LoadDiaryYearEvent());
     _calendarDayBloc.add(LoadCalendarDayEvent(_selectedDate));
     _diaryBloc.updateHomePage();
@@ -190,6 +226,26 @@ class _DiaryPageState extends State<DiaryPage> with WidgetsBindingObserver {
   void _onCopyActivityItem(UserActivityEntity userActivityEntity,
       TrackedDayEntity? trackedDayEntity) async {
     log.info("Should copy activity");
+  }
+
+  void _onDragIntakeItem(bool isDragging) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _isDragging = isDragging;
+      });
+    });
+  }
+
+  void _confirmDelete(BuildContext context, IntakeEntity intake) async {
+    bool? delete = await showDialog<bool>(
+        context: context, builder: (context) => const DeleteDialog());
+
+    if (delete == true) {
+      _onDeleteIntakeItem(intake);
+    }
+    setState(() {
+      _isDragging = false;
+    });
   }
 
   void _onDateSelected(

@@ -272,7 +272,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
   }
 
-  void onDeleteIntake(IntakeEntity intake, TrackedDayEntity? trackedDayEntity) {
+  void onDeleteIntake(IntakeEntity intake) {
     _homeBloc.deleteIntakeItem(intake);
     _homeBloc.add(const LoadItemsEvent());
   }
@@ -282,7 +282,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         context: context, builder: (context) => const DeleteDialog());
 
     if (delete == true) {
-      onDeleteIntake(intake, null);
+      onDeleteIntake(intake);
     }
     setState(() {
       _isDragging = false;
