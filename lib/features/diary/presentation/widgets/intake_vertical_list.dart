@@ -12,7 +12,6 @@ import 'package:opennutritracker/features/add_meal/presentation/add_meal_screen.
 import 'package:opennutritracker/features/add_meal/presentation/add_meal_type.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/calendar_day_bloc.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dart';
-import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
 import 'package:opennutritracker/features/meal_detail/presentation/bloc/meal_detail_bloc.dart';
 import 'package:opennutritracker/generated/l10n.dart';
 
@@ -54,12 +53,12 @@ class IntakeVerticalList extends StatefulWidget {
 
 class _IntakeVerticalListState extends State<IntakeVerticalList> {
   late MealDetailBloc _mealDetailBloc;
-  late HomeBloc _homeBloc;
+  late CalendarDayBloc _calendarDayBloc;
 
   @override
   void initState() {
     _mealDetailBloc = locator<MealDetailBloc>();
-    _homeBloc = locator<HomeBloc>();
+    _calendarDayBloc = locator<CalendarDayBloc>();
     super.initState();
   }
 
@@ -243,10 +242,7 @@ class _IntakeVerticalListState extends State<IntakeVerticalList> {
   void _onItemDropped(IntakeEntity entity) {
     _mealDetailBloc.addIntake(context, entity.unit, entity.amount.toString(),
         widget.addMealType.getIntakeType(), entity.meal, entity.dateTime);
-    _homeBloc.deleteIntakeItem(entity);
-
-    // Refresh Home Page
-    locator<HomeBloc>().add(const LoadItemsEvent());
+    _calendarDayBloc.deleteIntakeItem(context, entity);
 
     // Refresh Diary Page
     locator<DiaryBloc>().add(const LoadDiaryYearEvent());

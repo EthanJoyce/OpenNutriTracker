@@ -3,14 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/calendar_day_bloc.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dart';
-import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
 import 'package:opennutritracker/features/settings/presentation/bloc/export_import_bloc.dart';
 import 'package:opennutritracker/generated/l10n.dart';
 
 class ExportImportDialog extends StatelessWidget {
   final exportImportBloc = locator<ExportImportBloc>();
 
-  final _homeBloc = locator<HomeBloc>();
   final _diaryBloc = locator<DiaryBloc>();
   final _calendarDayBloc = locator<CalendarDayBloc>();
 
@@ -82,7 +80,6 @@ class ExportImportDialog extends StatelessWidget {
   }
 
   void refreshScreens() {
-    _homeBloc.add(const LoadItemsEvent());
     _diaryBloc.add(const LoadDiaryYearEvent());
     _calendarDayBloc.add(RefreshCalendarDayEvent());
   }

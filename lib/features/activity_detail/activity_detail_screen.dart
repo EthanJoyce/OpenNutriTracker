@@ -11,7 +11,6 @@ import 'package:opennutritracker/features/activity_detail/presentation/widget/ac
 import 'package:opennutritracker/features/activity_detail/presentation/widget/activity_title_expanded.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/calendar_day_bloc.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dart';
-import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
 import 'package:opennutritracker/generated/l10n.dart';
 
 class ActivityDetailScreen extends StatefulWidget {
@@ -191,9 +190,6 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
   void onAddButtonPressed(BuildContext context) {
     _activityDetailBloc.persistActivity(
         context, quantityTextController.text, totalKcal, activityEntity, _day);
-
-    // Refresh Home Page
-    locator<HomeBloc>().add(const LoadItemsEvent());
 
     // Refresh Diary Page
     locator<DiaryBloc>().add(const LoadDiaryYearEvent());

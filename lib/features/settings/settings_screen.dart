@@ -9,7 +9,6 @@ import 'package:opennutritracker/core/utils/theme_mode_provider.dart';
 import 'package:opennutritracker/core/utils/url_const.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/calendar_day_bloc.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dart';
-import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
 import 'package:opennutritracker/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:opennutritracker/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:opennutritracker/features/settings/presentation/widgets/export_import_dialog.dart';
@@ -30,7 +29,6 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   late SettingsBloc _settingsBloc;
   late ProfileBloc _profileBloc;
-  late HomeBloc _homeBloc;
   late DiaryBloc _diaryBloc;
   late CalendarDayBloc _calendarDayBloc;
 
@@ -38,7 +36,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     _settingsBloc = locator<SettingsBloc>();
     _profileBloc = locator<ProfileBloc>();
-    _homeBloc = locator<HomeBloc>();
     _diaryBloc = locator<DiaryBloc>();
     _calendarDayBloc = locator<CalendarDayBloc>();
     super.initState();
@@ -168,7 +165,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
       // Update blocs
       _profileBloc.add(LoadProfileEvent());
-      _homeBloc.add(LoadItemsEvent());
       _diaryBloc.add(const LoadDiaryYearEvent());
     }
   }
@@ -179,7 +175,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       builder: (context) => CalculationsDialog(
         settingsBloc: _settingsBloc,
         profileBloc: _profileBloc,
-        homeBloc: _homeBloc,
         diaryBloc: _diaryBloc,
         calendarDayBloc: _calendarDayBloc,
       ),
@@ -218,7 +213,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onPressed: () async {
                     _settingsBloc.setShowActivityTracker(switchActive);
                     _settingsBloc.add(LoadSettingsEvent()); // Refresh Settings Page
-                    _homeBloc.add(const LoadItemsEvent()); // Refresh Home Page
                     _diaryBloc.add(const LoadDiaryYearEvent()); // Refresh Diary Page
                     Navigator.of(context).pop();
                   },
