@@ -12,7 +12,6 @@ import 'package:opennutritracker/core/utils/calc/unit_calc.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/calendar_day_bloc.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dart';
-import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
 
 part 'profile_event.dart';
 
@@ -58,8 +57,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     // Refresh Profile
     add(LoadProfileEvent());
-    // Refresh Home Page
-    locator<HomeBloc>().add(const LoadItemsEvent());
     // Refresh Diary Page
     locator<DiaryBloc>().add(const LoadDiaryYearEvent());
     locator<CalendarDayBloc>().add(RefreshCalendarDayEvent());

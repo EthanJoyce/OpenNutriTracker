@@ -171,7 +171,6 @@ class _DiaryPageState extends State<DiaryPage> with WidgetsBindingObserver {
           .updateIntakeItem(intakeEntity.id, {'amount': changeIntakeAmount}, trackedDayEntity?.day ?? DateTime.now());
       _diaryBloc.add(const LoadDiaryYearEvent());
       _calendarDayBloc.add(LoadCalendarDayEvent(_selectedDate));
-      _diaryBloc.updateHomePage();
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(S.of(context).itemUpdatedSnackbar)));
@@ -185,7 +184,6 @@ class _DiaryPageState extends State<DiaryPage> with WidgetsBindingObserver {
         context, intakeEntity);
     _diaryBloc.add(const LoadDiaryYearEvent());
     _calendarDayBloc.add(LoadCalendarDayEvent(_selectedDate));
-    _diaryBloc.updateHomePage();
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(S.of(context).itemDeletedSnackbar)));
@@ -198,7 +196,6 @@ class _DiaryPageState extends State<DiaryPage> with WidgetsBindingObserver {
         context, userActivityEntity, trackedDayEntity?.day ?? DateTime.now());
     _diaryBloc.add(const LoadDiaryYearEvent());
     _calendarDayBloc.add(LoadCalendarDayEvent(_selectedDate));
-    _diaryBloc.updateHomePage();
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(S.of(context).itemDeletedSnackbar)));
@@ -220,7 +217,6 @@ class _DiaryPageState extends State<DiaryPage> with WidgetsBindingObserver {
         finalType,
         intakeEntity.meal,
         DateTime.now());
-    _diaryBloc.updateHomePage();
   }
 
   void _onCopyActivityItem(UserActivityEntity userActivityEntity,

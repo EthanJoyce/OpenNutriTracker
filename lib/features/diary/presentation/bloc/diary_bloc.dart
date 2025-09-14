@@ -4,8 +4,6 @@ import 'package:opennutritracker/core/domain/entity/tracked_day_entity.dart';
 import 'package:opennutritracker/core/domain/usecase/get_config_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_tracked_day_usecase.dart';
 import 'package:opennutritracker/core/utils/extensions.dart';
-import 'package:opennutritracker/core/utils/locator.dart';
-import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
 
 part 'diary_event.dart';
 
@@ -41,9 +39,5 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
 
       emit(DiaryLoadedState(trackedDaysMap, showActivityTracker, usesImperialUnits));
     });
-  }
-
-  void updateHomePage() {
-    locator<HomeBloc>().add(const LoadItemsEvent());
   }
 }

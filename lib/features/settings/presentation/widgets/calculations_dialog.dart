@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/calendar_day_bloc.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dart';
-import 'package:opennutritracker/features/home/presentation/bloc/home_bloc.dart';
 import 'package:opennutritracker/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:opennutritracker/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:opennutritracker/generated/l10n.dart';
@@ -9,7 +8,6 @@ import 'package:opennutritracker/generated/l10n.dart';
 class CalculationsDialog extends StatefulWidget {
   final SettingsBloc settingsBloc;
   final ProfileBloc profileBloc;
-  final HomeBloc homeBloc;
   final DiaryBloc diaryBloc;
   final CalendarDayBloc calendarDayBloc;
 
@@ -17,7 +15,6 @@ class CalculationsDialog extends StatefulWidget {
     super.key,
     required this.settingsBloc,
     required this.profileBloc,
-    required this.homeBloc,
     required this.diaryBloc,
     required this.calendarDayBloc,
   });
@@ -344,7 +341,6 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
     widget.settingsBloc.add(LoadSettingsEvent());
     // Update other blocs that need the new calorie value
     widget.profileBloc.add(LoadProfileEvent());
-    widget.homeBloc.add(LoadItemsEvent());
 
     // Update tracked day entity
     widget.settingsBloc.updateTrackedDay(DateTime.now());
