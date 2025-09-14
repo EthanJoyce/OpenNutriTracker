@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
 import 'package:opennutritracker/core/domain/entity/tracked_day_entity.dart';
 import 'package:opennutritracker/core/domain/entity/user_activity_entity.dart';
+import 'package:opennutritracker/core/domain/usecase/get_kcal_goal_usecase.dart';
+import 'package:opennutritracker/core/domain/usecase/get_macro_goal_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/add_tracked_day_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/delete_intake_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/delete_user_activity_usecase.dart';
@@ -20,6 +22,8 @@ part 'calendar_day_event.dart';
 part 'calendar_day_state.dart';
 
 class CalendarDayBloc extends Bloc<CalendarDayEvent, CalendarDayState> {
+  final GetKcalGoalUsecase _getKcalGoalUsecase;
+  final GetMacroGoalUsecase _getMacroGoalUsecase;
   final GetUserActivityUsecase _getUserActivityUsecase;
   final GetIntakeUsecase _getIntakeUsecase;
   final DeleteIntakeUsecase _deleteIntakeUsecase;
@@ -31,6 +35,8 @@ class CalendarDayBloc extends Bloc<CalendarDayEvent, CalendarDayState> {
   DateTime? _currentDay;
 
   CalendarDayBloc(
+      this._getKcalGoalUsecase,
+      this._getMacroGoalUsecase,
       this._getUserActivityUsecase,
       this._getIntakeUsecase,
       this._deleteIntakeUsecase,
@@ -65,7 +71,24 @@ class CalendarDayBloc extends Bloc<CalendarDayEvent, CalendarDayState> {
     final dinnerIntakeList = await _getIntakeUsecase.getDinnerIntakeByDay(day);
     final snackIntakeList = await _getIntakeUsecase.getSnackIntakeByDay(day);
 
-    final trackedDayEntity = await _getTrackedDayUsecase.getTrackedDay(day);
+    TrackedDayEntity? trackedDayEntity = await _getTrackedDayUsecase.getTrackedDay(day);
+    if (trackedDayEntity == null) {
+      // If there's no tracked day, create one with our user-specified defaults
+      final calorieGoal = await _getKcalGoalUsecase.getKcalGoal();
+      final carbsGoal =
+          await _getMacroGoalUsecase.getCarbsGoal(calorieGoal);
+      final fatGoal =
+          await _getMacroGoalUsecase.getFatsGoal(calorieGoal);
+      final proteinGoal =
+          await _getMacroGoalUsecase.getProteinsGoal(calorieGoal);
+      trackedDayEntity = TrackedDayEntity(
+        day: day,
+        calorieGoal: calorieGoal,
+        carbsGoal: carbsGoal,
+        fatGoal: fatGoal,
+        proteinGoal: proteinGoal
+      );
+    }
 
     emit(CalendarDayLoaded(
         trackedDayEntity,

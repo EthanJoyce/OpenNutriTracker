@@ -116,6 +116,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "dataCollectionLabel": MessageLookupByLibrary.simpleMessage(
       "Support development by providing anonymous usage data",
     ),
+    "dateTodayLabel": MessageLookupByLibrary.simpleMessage("Today"),
+    "dateTomorrowLabel": MessageLookupByLibrary.simpleMessage("Tomorrow"),
+    "dateYesterdayLabel": MessageLookupByLibrary.simpleMessage("Yesterday"),
     "deleteAllLabel": MessageLookupByLibrary.simpleMessage("Delete all"),
     "deleteTimeDialogContent": MessageLookupByLibrary.simpleMessage(
       "Do want to delete the selected item?",

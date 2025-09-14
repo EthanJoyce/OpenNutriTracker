@@ -15,7 +15,7 @@ class CalendarDayLoading extends CalendarDayState {
 }
 
 class CalendarDayLoaded extends CalendarDayState {
-  final TrackedDayEntity? trackedDayEntity;
+  final TrackedDayEntity trackedDayEntity;
   final List<UserActivityEntity> userActivityList;
   final List<IntakeEntity> breakfastIntakeList;
   final List<IntakeEntity> lunchIntakeList;

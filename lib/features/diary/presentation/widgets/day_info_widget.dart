@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:collection/collection.dart';
 import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
 import 'package:opennutritracker/core/domain/entity/tracked_day_entity.dart';
 import 'package:opennutritracker/core/domain/entity/user_activity_entity.dart';
@@ -12,10 +13,12 @@ import 'package:opennutritracker/features/add_meal/presentation/add_meal_type.da
 import 'package:opennutritracker/features/home/presentation/widgets/intake_vertical_list.dart';
 import 'package:opennutritracker/generated/l10n.dart';
 
+import 'package:opennutritracker/features/home/presentation/widgets/dashboard_widget.dart';
+
 class DayInfoWidget extends StatelessWidget {
   final bool showActivityTracker;
   final DateTime selectedDay;
-  final TrackedDayEntity? trackedDayEntity;
+  final TrackedDayEntity trackedDayEntity;
   final List<UserActivityEntity> userActivities;
   final List<IntakeEntity> breakfastIntake;
   final List<IntakeEntity> lunchIntake;
@@ -55,69 +58,36 @@ class DayInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (kcalTracked, carbsTracked, fatTracked, proteinTracked) = _getCaloriesAndMacrosTracked();
+    final totalKcalActivities = userActivities.map((activity) => activity.burnedKcal).toList().sum;
+    final kcalGoal = trackedDayEntity.calorieGoal;
+    final carbsGoal = trackedDayEntity.carbsGoal ?? 0;
+    final fatGoal = trackedDayEntity.fatGoal ?? 0;
+    final proteinGoal = trackedDayEntity.proteinGoal ?? 0;
+    final kcalRemaining = kcalGoal - kcalTracked;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(DateFormat.yMMMMEEEEd().format(selectedDay),
+          child: Text(_getFormattedDateString(context, selectedDay),
               style: Theme.of(context).textTheme.headlineSmall),
         ),
         const SizedBox(height: 8.0),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            trackedDayEntity == null
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(S.of(context).nothingAddedLabel,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface.withValues(alpha: 0.7))),
-                  )
-                : const SizedBox(),
-            trackedDayEntity != null
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Card(
-                          elevation: 0.0,
-                          margin: const EdgeInsets.all(0.0),
-                          color: trackedDayEntity
-                              ?.getRatingDayTextBackgroundColor(context, kcalTracked),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 8.0),
-                            child: Text(
-                              _getCaloriesTrackedDisplayString(trackedDayEntity!, kcalTracked),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
-                                  ?.copyWith(
-                                      color: trackedDayEntity
-                                          ?.getRatingDayTextColor(context, kcalTracked),
-                                      fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 4.0),
-                        Text(_getMacroTrackedDisplayString(trackedDayEntity!, carbsTracked, fatTracked, proteinTracked),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface.withValues(alpha: 0.7))),
-                      ],
-                    ),
-                  )
-                : const SizedBox(),
+            DashboardWidget(
+              totalKcalDaily: kcalGoal,
+              totalKcalLeft: kcalRemaining,
+              totalKcalSupplied: kcalTracked,
+              totalKcalBurned: totalKcalActivities,
+              totalCarbsIntake: carbsTracked,
+              totalFatsIntake: fatTracked,
+              totalProteinsIntake: proteinTracked,
+              totalCarbsGoal: carbsGoal,
+              totalFatsGoal: fatGoal,
+              totalProteinsGoal: proteinGoal,
+            ),
             const SizedBox(height: 8.0),
             showActivityTracker ?
               ActivityVerticalList(
@@ -214,15 +184,19 @@ class DayInfoWidget extends StatelessWidget {
     return (caloriesTracked, carbsTracked, fatTracked, proteinTracked);
   }
 
-  String _getCaloriesTrackedDisplayString(TrackedDayEntity trackedDay, double caloriesTracked) {
-    return '${caloriesTracked.toInt()}/${trackedDay.calorieGoal.toInt()} kcal';
-  }
-
-  String _getMacroTrackedDisplayString(TrackedDayEntity trackedDay, double carbs, double fat, double protein) {
-    final carbsGoal = trackedDay.carbsGoal?.floor().toString() ?? '?';
-    final fatGoal = trackedDay.fatGoal?.floor().toString() ?? '?';
-    final proteinGoal = trackedDay.proteinGoal?.floor().toString() ?? '?';
-    return 'Carbs: ${carbs.toInt()}/${carbsGoal}g, Fat: ${fat.toInt()}/${fatGoal}g, Protein: ${protein.toInt()}/${proteinGoal}g';
+  String _getFormattedDateString(BuildContext context, DateTime selectedDay) {
+    final DateTime today = DateTime.now();
+    final DateTime yesterday = today.subtract(const Duration(days: 1));
+    final DateTime tomorrow = today.add(const Duration(days: 1));
+    if (DateUtils.isSameDay(selectedDay, yesterday)) {
+      return S.of(context).dateYesterdayLabel;
+    } else if (DateUtils.isSameDay(selectedDay, today)) {
+      return S.of(context).dateTodayLabel;
+    } else if (DateUtils.isSameDay(selectedDay, tomorrow)) {
+      return S.of(context).dateTomorrowLabel;
+    }
+    // Otherwise, just return the formatted full date string
+    return DateFormat.yMMMMEEEEd().format(selectedDay);
   }
 
   void showCopyOrDeleteIntakeDialog(

@@ -843,6 +843,31 @@ class S {
     return Intl.message('Import', name: 'importAction', desc: '', args: []);
   }
 
+  /// `Today`
+  String get dateTodayLabel {
+    return Intl.message('Today', name: 'dateTodayLabel', desc: '', args: []);
+  }
+
+  /// `Yesterday`
+  String get dateYesterdayLabel {
+    return Intl.message(
+      'Yesterday',
+      name: 'dateYesterdayLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tomorrow`
+  String get dateTomorrowLabel {
+    return Intl.message(
+      'Tomorrow',
+      name: 'dateTomorrowLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add new Item:`
   String get addItemLabel {
     return Intl.message(
