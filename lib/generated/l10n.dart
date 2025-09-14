@@ -868,6 +868,16 @@ class S {
     );
   }
 
+  /// `month`
+  String get monthLabel {
+    return Intl.message('month', name: 'monthLabel', desc: '', args: []);
+  }
+
+  /// `week`
+  String get weekLabel {
+    return Intl.message('week', name: 'weekLabel', desc: '', args: []);
+  }
+
   /// `Add new Item:`
   String get addItemLabel {
     return Intl.message(

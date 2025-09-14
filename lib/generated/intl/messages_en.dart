@@ -232,6 +232,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "missingProductInfo": MessageLookupByLibrary.simpleMessage(
       "Product missing required kcal or macronutrients information",
     ),
+    "monthLabel": MessageLookupByLibrary.simpleMessage("month"),
     "noActivityRecentlyAddedLabel": MessageLookupByLibrary.simpleMessage(
       "No activity recently added",
     ),
@@ -807,6 +808,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "sugarLabel": MessageLookupByLibrary.simpleMessage("sugar"),
     "suppliedLabel": MessageLookupByLibrary.simpleMessage("supplied"),
     "unitLabel": MessageLookupByLibrary.simpleMessage("Unit"),
+    "weekLabel": MessageLookupByLibrary.simpleMessage("week"),
     "weightLabel": MessageLookupByLibrary.simpleMessage("Weight"),
     "yearsLabel": m3,
   };

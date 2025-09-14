@@ -90,6 +90,8 @@
   "dateTodayLabel": "Today",
   "dateYesterdayLabel": "Yesterday",
   "dateTomorrowLabel": "Tomorrow",
+  "monthLabel": "month",
+  "weekLabel": "week",
   "addItemLabel": "Add new Item:",
   "activityLabel": "Activity",
   "activityExample": "e.g. running, biking, yoga ...",

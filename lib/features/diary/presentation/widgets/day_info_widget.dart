@@ -67,12 +67,6 @@ class DayInfoWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(_getFormattedDateString(context, selectedDay),
-              style: Theme.of(context).textTheme.headlineSmall),
-        ),
-        const SizedBox(height: 8.0),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -182,21 +176,6 @@ class DayInfoWidget extends StatelessWidget {
       }
     }
     return (caloriesTracked, carbsTracked, fatTracked, proteinTracked);
-  }
-
-  String _getFormattedDateString(BuildContext context, DateTime selectedDay) {
-    final DateTime today = DateTime.now();
-    final DateTime yesterday = today.subtract(const Duration(days: 1));
-    final DateTime tomorrow = today.add(const Duration(days: 1));
-    if (DateUtils.isSameDay(selectedDay, yesterday)) {
-      return S.of(context).dateYesterdayLabel;
-    } else if (DateUtils.isSameDay(selectedDay, today)) {
-      return S.of(context).dateTodayLabel;
-    } else if (DateUtils.isSameDay(selectedDay, tomorrow)) {
-      return S.of(context).dateTomorrowLabel;
-    }
-    // Otherwise, just return the formatted full date string
-    return DateFormat.yMMMMEEEEd().format(selectedDay);
   }
 
   void showCopyOrDeleteIntakeDialog(
