@@ -18,6 +18,15 @@ class ConfigRepository {
     _configDataSource.setConfigDisclaimer(hasAcceptedDisclaimer);
   }
 
+  Future<void> setConfigShowActivityTracker(
+      bool showActivityTracker) async {
+    _configDataSource.setConfigShowActivityTracker(showActivityTracker);
+  }
+
+  Future<bool> getConfigShowActivityTracker() async {
+    return await _configDataSource.getShowActivityTracker();
+  }
+
   Future<void> setConfigHasAcceptedAnonymousData(
       bool hasAcceptedAnonymousData) async {
     _configDataSource.setConfigAcceptedAnonymousData(hasAcceptedAnonymousData);

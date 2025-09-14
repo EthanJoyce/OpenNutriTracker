@@ -29,6 +29,15 @@ class ConfigDataSource {
     config?.save();
   }
 
+  Future<void> setConfigShowActivityTracker(
+      bool showActivityTracker) async {
+    _log.fine(
+        'Updating config showActivityTracker to $showActivityTracker');
+    final config = _configBox.get(_configKey);
+    config?.showActivityTracker = showActivityTracker;
+    config?.save();
+  }
+
   Future<void> setConfigAcceptedAnonymousData(
       bool hasAcceptedAnonymousData) async {
     _log.fine(
@@ -97,5 +106,10 @@ class ConfigDataSource {
   Future<bool> getHasAcceptedAnonymousData() async {
     final config = _configBox.get(_configKey);
     return config?.hasAcceptedSendAnonymousData ?? false;
+  }
+
+  Future<bool> getShowActivityTracker() async {
+    final config = _configBox.get(_configKey);
+    return config?.showActivityTracker ?? true;
   }
 }

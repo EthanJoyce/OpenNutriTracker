@@ -15,6 +15,12 @@ class AddConfigUsecase {
     _configRepository.setConfigDisclaimer(hasAcceptedDisclaimer);
   }
 
+  Future<void> setConfigShowActivityTracker(
+      bool showActivityTracker) async {
+    _configRepository
+        .setConfigShowActivityTracker(showActivityTracker);
+  }
+
   Future<void> setConfigHasAcceptedAnonymousData(
       bool hasAcceptedAnonymousData) async {
     _configRepository

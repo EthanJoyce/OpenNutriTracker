@@ -5,6 +5,7 @@ import 'package:opennutritracker/core/domain/entity/app_theme_entity.dart';
 class ConfigEntity extends Equatable {
   final bool hasAcceptedDisclaimer;
   final bool hasAcceptedPolicy;
+  final bool showActivityTracker;
   final bool hasAcceptedSendAnonymousData;
   final AppThemeEntity appTheme;
   final bool usesImperialUnits;
@@ -13,8 +14,11 @@ class ConfigEntity extends Equatable {
   final double? userProteinGoalPct;
   final double? userFatGoalPct;
 
-  const ConfigEntity(this.hasAcceptedDisclaimer, this.hasAcceptedPolicy,
-      this.hasAcceptedSendAnonymousData, this.appTheme,
+  const ConfigEntity(this.hasAcceptedDisclaimer,
+      this.hasAcceptedPolicy,
+      this.showActivityTracker,
+      this.hasAcceptedSendAnonymousData,
+      this.appTheme,
       {this.usesImperialUnits = false,
       this.userKcalAdjustment,
       this.userCarbGoalPct,
@@ -24,6 +28,7 @@ class ConfigEntity extends Equatable {
   factory ConfigEntity.fromConfigDBO(ConfigDBO dbo) => ConfigEntity(
         dbo.hasAcceptedDisclaimer,
         dbo.hasAcceptedPolicy,
+        dbo.showActivityTracker ?? true,
         dbo.hasAcceptedSendAnonymousData,
         AppThemeEntity.fromAppThemeDBO(dbo.selectedAppTheme),
         usesImperialUnits: dbo.usesImperialUnits ?? false,

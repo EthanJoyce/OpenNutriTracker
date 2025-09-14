@@ -22,6 +22,9 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     on<LoadDiaryYearEvent>((event, emit) async {
       emit(DiaryLoadingState());
 
+      final showActivityTracker =
+          (await _getConfigUsecase.getConfig()).showActivityTracker;
+
       final usesImperialUnits =
           (await _getConfigUsecase.getConfig()).usesImperialUnits;
 
@@ -36,7 +39,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
           trackedDay.day.toParsedDay(): trackedDay
       };
 
-      emit(DiaryLoadedState(trackedDaysMap, usesImperialUnits));
+      emit(DiaryLoadedState(trackedDaysMap, showActivityTracker, usesImperialUnits));
     });
   }
 

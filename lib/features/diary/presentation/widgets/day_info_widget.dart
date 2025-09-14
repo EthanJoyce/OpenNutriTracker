@@ -13,6 +13,7 @@ import 'package:opennutritracker/features/home/presentation/widgets/intake_verti
 import 'package:opennutritracker/generated/l10n.dart';
 
 class DayInfoWidget extends StatelessWidget {
+  final bool showActivityTracker;
   final DateTime selectedDay;
   final TrackedDayEntity? trackedDayEntity;
   final List<UserActivityEntity> userActivities;
@@ -35,6 +36,7 @@ class DayInfoWidget extends StatelessWidget {
 
   const DayInfoWidget({
     super.key,
+    required this.showActivityTracker,
     required this.selectedDay,
     required this.trackedDayEntity,
     required this.userActivities,
@@ -117,11 +119,13 @@ class DayInfoWidget extends StatelessWidget {
                   )
                 : const SizedBox(),
             const SizedBox(height: 8.0),
-            ActivityVerticalList(
-                day: selectedDay,
-                title: S.of(context).activityLabel,
-                userActivityList: userActivities,
-                onItemLongPressedCallback: onActivityItemLongPressed),
+            showActivityTracker ?
+              ActivityVerticalList(
+                  day: selectedDay,
+                  title: S.of(context).activityLabel,
+                  userActivityList: userActivities,
+                  onItemLongPressedCallback: onActivityItemLongPressed)
+              : const SizedBox.shrink(),
             IntakeVerticalList(
               day: selectedDay,
               title: S.of(context).breakfastLabel,

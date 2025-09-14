@@ -56,6 +56,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           return _getLoadedContent(
               context,
               state.showDisclaimerDialog,
+              state.showActivityTracker,
               state.totalKcalDaily,
               state.totalKcalLeft,
               state.totalKcalSupplied,
@@ -97,6 +98,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Widget _getLoadedContent(
       BuildContext context,
       bool showDisclaimerDialog,
+      bool showActivityTracker,
       double totalKcalDaily,
       double totalKcalLeft,
       double totalKcalSupplied,
@@ -130,12 +132,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           totalFatsGoal: totalFatsGoal,
           totalProteinsGoal: totalProteinsGoal,
         ),
-        ActivityVerticalList(
-          day: DateTime.now(),
-          title: S.of(context).activityLabel,
-          userActivityList: userActivities,
-          onItemLongPressedCallback: onActivityItemLongPressed,
-        ),
+        showActivityTracker ?
+          ActivityVerticalList(
+            day: DateTime.now(),
+            title: S.of(context).activityLabel,
+            userActivityList: userActivities,
+            onItemLongPressedCallback: onActivityItemLongPressed,
+          ) :
+          const SizedBox.shrink(), // "Null" widget that doesn't appear in UI
         IntakeVerticalList(
           day: DateTime.now(),
           title: S.of(context).breakfastLabel,

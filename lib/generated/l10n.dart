@@ -489,6 +489,16 @@ class S {
     );
   }
 
+  /// `User Interface`
+  String get settingsUserInterfaceLabel {
+    return Intl.message(
+      'User Interface',
+      name: 'settingsUserInterfaceLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Theme`
   String get settingsThemeLabel {
     return Intl.message(
@@ -554,6 +564,16 @@ class S {
     return Intl.message(
       'Report Error',
       name: 'settingsReportErrorLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Privacy Settings`
+  String get settingsUserInterfaceSettings {
+    return Intl.message(
+      'Privacy Settings',
+      name: 'settingsUserInterfaceSettings',
       desc: '',
       args: [],
     );
@@ -664,6 +684,16 @@ class S {
     return Intl.message(
       'Do you want to report an error to the developer?',
       name: 'reportErrorDialogText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show activity tracker`
+  String get showActivityTracker {
+    return Intl.message(
+      'Show activity tracker',
+      name: 'showActivityTracker',
       desc: '',
       args: [],
     );

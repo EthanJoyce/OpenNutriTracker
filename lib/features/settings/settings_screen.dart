@@ -73,6 +73,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onTap: () => _showCalculationsDialog(context),
                 ),
                 ListTile(
+                  leading: const Icon(Icons.settings_applications),
+                  title: Text(S.of(context).settingsUserInterfaceLabel),
+                  onTap: () => _showUserInterfaceDialog(context, state.showActivityTracker),
+                ),
+                ListTile(
                   leading: const Icon(Icons.brightness_medium_outlined),
                   title: Text(S.of(context).settingsThemeLabel),
                   onTap: () => _showThemeDialog(context, state.appTheme),
@@ -179,6 +184,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
         calendarDayBloc: _calendarDayBloc,
       ),
     );
+  }
+
+  void _showUserInterfaceDialog(
+      BuildContext context, bool showActivityTracker) async {
+    bool switchActive = showActivityTracker;
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(S.of(context).settingsUserInterfaceSettings),
+            content: StatefulBuilder(
+              builder: (BuildContext context,
+                  void Function(void Function()) setState) {
+                return SwitchListTile(
+                  title: Text(S.of(context).showActivityTracker),
+                  value: switchActive,
+                  onChanged: (bool value) {
+                    setState(() {
+                      switchActive = value;
+                    });
+                  },
+                );
+              },
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(S.of(context).dialogCancelLabel)),
+              TextButton(
+                  onPressed: () async {
+                    _settingsBloc.setShowActivityTracker(switchActive);
+                    _settingsBloc.add(LoadSettingsEvent()); // Refresh Settings Page
+                    _homeBloc.add(const LoadItemsEvent()); // Refresh Home Page
+                    _diaryBloc.add(const LoadDiaryYearEvent()); // Refresh Diary Page
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(S.of(context).dialogOKLabel))
+            ],
+          );
+        });
   }
 
   void _showExportImportDialog(BuildContext context) {

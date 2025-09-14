@@ -787,7 +787,16 @@ class MessageLookup extends MessageLookupByLibrary {
       "System default",
     ),
     "settingsUnitsLabel": MessageLookupByLibrary.simpleMessage("Units"),
+    "settingsUserInterfaceLabel": MessageLookupByLibrary.simpleMessage(
+      "User Interface",
+    ),
+    "settingsUserInterfaceSettings": MessageLookupByLibrary.simpleMessage(
+      "Privacy Settings",
+    ),
     "settingsVolumeLabel": MessageLookupByLibrary.simpleMessage("Volume"),
+    "showActivityTracker": MessageLookupByLibrary.simpleMessage(
+      "Show activity tracker",
+    ),
     "snackExample": MessageLookupByLibrary.simpleMessage(
       "e.g. apple, ice cream, chocolate ...",
     ),

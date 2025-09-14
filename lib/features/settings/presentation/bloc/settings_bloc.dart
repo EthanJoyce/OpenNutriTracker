@@ -38,10 +38,16 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
       emit(SettingsLoadedState(
           appVersion,
+          userConfig.showActivityTracker,
           userConfig.hasAcceptedSendAnonymousData,
           userConfig.appTheme,
           usesImperialUnits));
     });
+  }
+
+  void setShowActivityTracker(bool showActivityTracker) {
+    _addConfigUsecase
+        .setConfigShowActivityTracker(showActivityTracker);
   }
 
   void setHasAcceptedAnonymousData(bool hasAcceptedAnonymousData) {

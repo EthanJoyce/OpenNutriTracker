@@ -26,10 +26,16 @@ class ConfigDBO extends HiveObject {
   double? userProteinGoalPct;
   @HiveField(8)
   double? userFatGoalPct;
+  @HiveField(9)
+  bool? showActivityTracker;
 
-  ConfigDBO(this.hasAcceptedDisclaimer, this.hasAcceptedPolicy,
-      this.hasAcceptedSendAnonymousData, this.selectedAppTheme,
-      {this.usesImperialUnits = false, this.userKcalAdjustment});
+  ConfigDBO(this.hasAcceptedDisclaimer,
+      this.hasAcceptedPolicy,
+      this.hasAcceptedSendAnonymousData,
+      this.selectedAppTheme,
+      {this.usesImperialUnits = false,
+      this.userKcalAdjustment,
+      this.showActivityTracker});
 
   factory ConfigDBO.empty() =>
       ConfigDBO(false, false, false, AppThemeDBO.system);
@@ -39,7 +45,8 @@ class ConfigDBO extends HiveObject {
       entity.hasAcceptedPolicy,
       entity.hasAcceptedSendAnonymousData,
       AppThemeDBO.fromAppThemeEntity(entity.appTheme),
-      usesImperialUnits: entity.usesImperialUnits);
+      usesImperialUnits: entity.usesImperialUnits,
+      showActivityTracker: entity.showActivityTracker);
 
   factory ConfigDBO.fromJson(Map<String, dynamic> json) =>
       _$ConfigDBOFromJson(json);

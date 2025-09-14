@@ -16,12 +16,16 @@ class SettingsLoadingState extends SettingsState {
 
 class SettingsLoadedState extends SettingsState {
   final String versionNumber;
+  final bool showActivityTracker;
   final bool sendAnonymousData;
   final AppThemeEntity appTheme;
   final bool usesImperialUnits;
 
-  const SettingsLoadedState(this.versionNumber, this.sendAnonymousData,
-      this.appTheme, this.usesImperialUnits);
+  const SettingsLoadedState(this.versionNumber,
+      this.showActivityTracker,
+      this.sendAnonymousData,
+      this.appTheme,
+      this.usesImperialUnits);
 
   @override
   List<Object?> get props =>
