@@ -84,13 +84,16 @@ class DayInfoWidget extends StatelessWidget {
               totalProteinsGoal: proteinGoal,
             ),
             const SizedBox(height: 8.0),
-            showActivityTracker ?
-              ActivityVerticalList(
+            Visibility(
+              visible: showActivityTracker,
+              child:
+                ActivityVerticalList(
                   day: selectedDay,
                   title: S.of(context).activityLabel,
                   userActivityList: userActivities,
-                  onItemLongPressedCallback: _onActivityItemLongPressed)
-              : const SizedBox.shrink(),
+                  onItemLongPressedCallback: _onActivityItemLongPressed
+                )
+            ),
             IntakeVerticalList(
               day: selectedDay,
               title: S.of(context).breakfastLabel,

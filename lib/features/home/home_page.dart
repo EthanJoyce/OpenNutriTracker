@@ -132,14 +132,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           totalFatsGoal: totalFatsGoal,
           totalProteinsGoal: totalProteinsGoal,
         ),
-        showActivityTracker ?
-          ActivityVerticalList(
-            day: DateTime.now(),
-            title: S.of(context).activityLabel,
-            userActivityList: userActivities,
-            onItemLongPressedCallback: onActivityItemLongPressed,
-          ) :
-          const SizedBox.shrink(), // "Null" widget that doesn't appear in UI
+        Visibility(
+          visible: showActivityTracker,
+          child:
+            ActivityVerticalList(
+              day: DateTime.now(),
+              title: S.of(context).activityLabel,
+              userActivityList: userActivities,
+              onItemLongPressedCallback: onActivityItemLongPressed,
+            )
+        ),
         IntakeVerticalList(
           day: DateTime.now(),
           title: S.of(context).breakfastLabel,
