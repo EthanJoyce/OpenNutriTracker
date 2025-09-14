@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:opennutritracker/core/presentation/widgets/add_item_bottom_sheet.dart';
 import 'package:opennutritracker/features/diary/diary_page.dart';
+import 'package:opennutritracker/core/presentation/widgets/home_appbar.dart';
 import 'package:opennutritracker/core/presentation/widgets/main_appbar.dart';
 import 'package:opennutritracker/features/profile/profile_page.dart';
 import 'package:opennutritracker/generated/l10n.dart';
@@ -25,7 +26,7 @@ class _MainScreenState extends State<MainScreen> {
       const ProfilePage(),
     ];
     _appbarPages = [
-      MainAppbar(title: S.of(context).diaryLabel, iconData: Icons.book),
+      const HomeAppbar(),
       MainAppbar(
           title: S.of(context).profileLabel, iconData: Icons.account_circle)
     ];
