@@ -28,6 +28,13 @@ class CalculationsDialog extends StatefulWidget {
   State<CalculationsDialog> createState() => _CalculationsDialogState();
 }
 
+enum MacroSelectionType {
+  none,
+  carbs,
+  protein,
+  fat,
+}
+
 class _CalculationsDialogState extends State<CalculationsDialog> {
   static const double _maxKcalAdjustment = 1000;
   static const double _minKcalAdjustment = -1000;
@@ -38,10 +45,15 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
   static const double _defaultFatPctSelection = 0.25;
   static const double _defaultProteinPctSelection = 0.15;
 
+  static const int _minimumMacroPercentage = 0;
+
   // Macros percentages
   double _carbsPctSelection = _defaultCarbsPctSelection * 100;
   double _proteinPctSelection = _defaultProteinPctSelection * 100;
   double _fatPctSelection = _defaultFatPctSelection * 100;
+  
+  MacroSelectionType _lastChangedMacro = MacroSelectionType.none;
+  MacroSelectionType _currentChangingMacro = MacroSelectionType.none;
 
   @override
   void didChangeDependencies() {
@@ -166,27 +178,41 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
             Colors.orange,
             (value) {
               setState(() {
+                // Implement a "latch" here - _currentChangingMacro is the one
+                // currently being changed, and _lastChangedMacro is whatever
+                // macro was previously being changed before this one
+                if (_currentChangingMacro != MacroSelectionType.carbs) {
+                  _lastChangedMacro = _currentChangingMacro;
+                }
+                _currentChangingMacro = MacroSelectionType.carbs;
+
                 double delta = value - _carbsPctSelection;
                 _carbsPctSelection = value;
 
-                // Adjust other percentages proportionally
-                double proteinRatio = _proteinPctSelection /
-                    (_proteinPctSelection + _fatPctSelection);
-                double fatRatio = _fatPctSelection /
-                    (_proteinPctSelection + _fatPctSelection);
+                // Always preserve the last changed macro
+                switch (_lastChangedMacro) {
+                case MacroSelectionType.none:
+                case MacroSelectionType.carbs:
+                  _proteinPctSelection -= delta / 2.0;
+                  _fatPctSelection -= delta / 2.0;
+                  break;
+                case MacroSelectionType.fat:
+                  _proteinPctSelection -= delta;
+                  break;
+                case MacroSelectionType.protein:
+                  _fatPctSelection -= delta;
+                  break;
+                }
 
-                _proteinPctSelection -= delta * proteinRatio;
-                _fatPctSelection -= delta * fatRatio;
-
-                // Ensure no value goes below 5%
-                if (_proteinPctSelection < 5) {
-                  double overflow = 5 - _proteinPctSelection;
-                  _proteinPctSelection = 5;
+                // Ensure no value goes below the minimum value
+                if (_proteinPctSelection < _minimumMacroPercentage) {
+                  double overflow = _minimumMacroPercentage - _proteinPctSelection;
+                  _proteinPctSelection = _minimumMacroPercentage.toDouble();
                   _fatPctSelection -= overflow;
                 }
-                if (_fatPctSelection < 5) {
-                  double overflow = 5 - _fatPctSelection;
-                  _fatPctSelection = 5;
+                if (_fatPctSelection < _minimumMacroPercentage) {
+                  double overflow = _minimumMacroPercentage - _fatPctSelection;
+                  _fatPctSelection = _minimumMacroPercentage.toDouble();
                   _proteinPctSelection -= overflow;
                 }
               });
@@ -200,25 +226,40 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
             Colors.blue,
             (value) {
               setState(() {
+                // Implement a "latch" here - _currentChangingMacro is the one
+                // currently being changed, and _lastChangedMacro is whatever
+                // macro was previously being changed before this one
+                if (_currentChangingMacro != MacroSelectionType.protein) {
+                  _lastChangedMacro = _currentChangingMacro;
+                }
+                _currentChangingMacro = MacroSelectionType.protein;
+
                 double delta = value - _proteinPctSelection;
                 _proteinPctSelection = value;
 
-                double carbsRatio = _carbsPctSelection /
-                    (_carbsPctSelection + _fatPctSelection);
-                double fatRatio =
-                    _fatPctSelection / (_carbsPctSelection + _fatPctSelection);
+                // Always preserve the last changed macro
+                switch (_lastChangedMacro) {
+                case MacroSelectionType.none:
+                case MacroSelectionType.protein:
+                  _carbsPctSelection -= delta / 2.0;
+                  _fatPctSelection -= delta / 2.0;
+                  break;
+                case MacroSelectionType.fat:
+                  _carbsPctSelection -= delta;
+                  break;
+                case MacroSelectionType.carbs:
+                  _fatPctSelection -= delta;
+                  break;
+                }
 
-                _carbsPctSelection -= delta * carbsRatio;
-                _fatPctSelection -= delta * fatRatio;
-
-                if (_carbsPctSelection < 5) {
-                  double overflow = 5 - _carbsPctSelection;
-                  _carbsPctSelection = 5;
+                if (_carbsPctSelection < _minimumMacroPercentage) {
+                  double overflow = _minimumMacroPercentage - _carbsPctSelection;
+                  _carbsPctSelection = _minimumMacroPercentage.toDouble();
                   _fatPctSelection -= overflow;
                 }
-                if (_fatPctSelection < 5) {
-                  double overflow = 5 - _fatPctSelection;
-                  _fatPctSelection = 5;
+                if (_fatPctSelection < _minimumMacroPercentage) {
+                  double overflow = _minimumMacroPercentage - _fatPctSelection;
+                  _fatPctSelection = _minimumMacroPercentage.toDouble();
                   _carbsPctSelection -= overflow;
                 }
               });
@@ -232,25 +273,40 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
             Colors.green,
             (value) {
               setState(() {
+                // Implement a "latch" here - _currentChangingMacro is the one
+                // currently being changed, and _lastChangedMacro is whatever
+                // macro was previously being changed before this one
+                if (_currentChangingMacro != MacroSelectionType.fat) {
+                  _lastChangedMacro = _currentChangingMacro;
+                }
+                _currentChangingMacro = MacroSelectionType.fat;
+
                 double delta = value - _fatPctSelection;
                 _fatPctSelection = value;
 
-                double carbsRatio = _carbsPctSelection /
-                    (_carbsPctSelection + _proteinPctSelection);
-                double proteinRatio = _proteinPctSelection /
-                    (_carbsPctSelection + _proteinPctSelection);
+                // Always preserve the last changed macro
+                switch (_lastChangedMacro) {
+                case MacroSelectionType.none:
+                case MacroSelectionType.fat:
+                  _carbsPctSelection -= delta / 2.0;
+                  _proteinPctSelection -= delta / 2.0;
+                  break;
+                case MacroSelectionType.protein:
+                  _carbsPctSelection -= delta;
+                  break;
+                case MacroSelectionType.carbs:
+                  _proteinPctSelection -= delta;
+                  break;
+                }
 
-                _carbsPctSelection -= delta * carbsRatio;
-                _proteinPctSelection -= delta * proteinRatio;
-
-                if (_carbsPctSelection < 5) {
-                  double overflow = 5 - _carbsPctSelection;
-                  _carbsPctSelection = 5;
+                if (_carbsPctSelection < _minimumMacroPercentage) {
+                  double overflow = _minimumMacroPercentage - _carbsPctSelection;
+                  _carbsPctSelection = _minimumMacroPercentage.toDouble();
                   _proteinPctSelection -= overflow;
                 }
-                if (_proteinPctSelection < 5) {
-                  double overflow = 5 - _proteinPctSelection;
-                  _proteinPctSelection = 5;
+                if (_proteinPctSelection < _minimumMacroPercentage) {
+                  double overflow = _minimumMacroPercentage - _proteinPctSelection;
+                  _proteinPctSelection = _minimumMacroPercentage.toDouble();
                   _carbsPctSelection -= overflow;
                 }
               });
@@ -300,13 +356,13 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
               inactiveTrackColor: color.withValues(alpha: 0.2),
             ),
             child: Slider(
-              min: 5,
-              max: 90,
+              min: _minimumMacroPercentage.toDouble(),
+              max: 100,
               value: pctValue,
-              divisions: 85,
+              divisions: 100 - _minimumMacroPercentage,
               onChanged: (value) {
                 final newValue = value.round().toDouble();
-                if (100 - newValue >= 10) {
+                if (newValue + (2*_minimumMacroPercentage) <= 100) {
                   onChanged(newValue);
                   _normalizeMacros();
                 }
@@ -341,11 +397,11 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
         // Set the last value to make total exactly 100
         _fatPctSelection = 100 - _carbsPctSelection - _proteinPctSelection;
 
-        // Ensure minimum values (5%)
-        if (_fatPctSelection < 5) {
-          _fatPctSelection = 5;
-          // Distribute remaining 95% proportionally between carbs and protein
-          double remaining = 95;
+        // Ensure minimum values
+        if (_fatPctSelection < _minimumMacroPercentage) {
+          _fatPctSelection = _minimumMacroPercentage.toDouble();
+          // Distribute remaining proportionally between carbs and protein
+          double remaining = 100 - _minimumMacroPercentage.toDouble();
           double ratio =
               _carbsPctSelection / (_carbsPctSelection + _proteinPctSelection);
           _carbsPctSelection = (remaining * ratio).roundToDouble();
