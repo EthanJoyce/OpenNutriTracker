@@ -2,11 +2,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:opennutritracker/core/domain/entity/app_theme_entity.dart';
+import 'package:opennutritracker/core/domain/entity/user_entity.dart';
 import 'package:opennutritracker/core/domain/usecase/add_config_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/add_tracked_day_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_config_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_kcal_goal_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_macro_goal_usecase.dart';
+import 'package:opennutritracker/core/domain/usecase/get_user_usecase.dart';
 import 'package:opennutritracker/core/utils/app_const.dart';
 
 part 'settings_event.dart';
@@ -16,6 +18,7 @@ part 'settings_state.dart';
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final log = Logger('SettingsBloc');
 
+  final GetUserUsecase _getUserUsecase;
   final GetConfigUsecase _getConfigUsecase;
   final AddConfigUsecase _addConfigUsecase;
   final AddTrackedDayUsecase _addTrackedDayUsecase;
@@ -23,6 +26,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final GetMacroGoalUsecase _getMacroGoalUsecase;
 
   SettingsBloc(
+      this._getUserUsecase,
       this._getConfigUsecase,
       this._addConfigUsecase,
       this._addTrackedDayUsecase,
@@ -32,12 +36,14 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<LoadSettingsEvent>((event, emit) async {
       emit(SettingsLoadingState());
 
+      final user = await _getUserUsecase.getUserData();
       final userConfig = await _getConfigUsecase.getConfig();
       final appVersion = await AppConst.getVersionNumber();
       final usesImperialUnits = userConfig.usesImperialUnits;
 
       emit(SettingsLoadedState(
           appVersion,
+          user,
           userConfig.showActivityTracker,
           userConfig.hasAcceptedSendAnonymousData,
           userConfig.appTheme,

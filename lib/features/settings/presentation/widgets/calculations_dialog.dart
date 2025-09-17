@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:opennutritracker/core/utils/calc/macro_calc.dart';
+import 'package:opennutritracker/core/utils/calc/calorie_goal_calc.dart';
+import 'package:opennutritracker/core/domain/entity/user_entity.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/calendar_day_bloc.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dart';
 import 'package:opennutritracker/features/profile/presentation/bloc/profile_bloc.dart';
@@ -10,6 +13,7 @@ class CalculationsDialog extends StatefulWidget {
   final ProfileBloc profileBloc;
   final DiaryBloc diaryBloc;
   final CalendarDayBloc calendarDayBloc;
+  final UserEntity user;
 
   const CalculationsDialog({
     super.key,
@@ -17,6 +21,7 @@ class CalculationsDialog extends StatefulWidget {
     required this.profileBloc,
     required this.diaryBloc,
     required this.calendarDayBloc,
+    required this.user,
   });
 
   @override
@@ -62,6 +67,14 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final kcalAbsValue = CalorieGoalCalc.getTotalKcalGoal(widget.user,
+        /*totalKcalActivities=*/0, kcalUserAdjustment: _kcalAdjustmentSelection);
+    final carbsAbsValue = MacroCalc.getTotalCarbsGoal(kcalAbsValue,
+        userCarbsGoal: (_carbsPctSelection / 100.0));
+    final proteinAbsValue = MacroCalc.getTotalProteinsGoal(kcalAbsValue,
+        userProteinsGoal: (_proteinPctSelection / 100.0));
+    final fatAbsValue = MacroCalc.getTotalFatsGoal(kcalAbsValue,
+        userFatsGoal: (_fatPctSelection / 100.0));
     return AlertDialog(
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,7 +117,15 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
                 )),
               ],
               onChanged: null),
-          const SizedBox(height: 64),
+          const SizedBox(height: 80),
+          Container(
+            alignment: Alignment.center,
+            child: Text(
+              '${kcalAbsValue.toInt()} ${S.of(context).kcalLabel}',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
+          const SizedBox(height: 48),
           Container(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -138,8 +159,10 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
           ),
           const SizedBox(height: 32),
           _buildMacroSlider(
+            context,
             S.of(context).carbsLabel,
             _carbsPctSelection,
+            carbsAbsValue,
             Colors.orange,
             (value) {
               setState(() {
@@ -170,8 +193,10 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
             },
           ),
           _buildMacroSlider(
+            context,
             S.of(context).proteinLabel,
             _proteinPctSelection,
+            proteinAbsValue,
             Colors.blue,
             (value) {
               setState(() {
@@ -200,8 +225,10 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
             },
           ),
           _buildMacroSlider(
+            context,
             S.of(context).fatLabel,
             _fatPctSelection,
+            fatAbsValue,
             Colors.green,
             (value) {
               setState(() {
@@ -247,8 +274,10 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
   }
 
   Widget _buildMacroSlider(
+    BuildContext context,
     String label,
-    double value,
+    double pctValue,
+    double absValue,
     Color color,
     ValueChanged<double> onChanged,
   ) {
@@ -258,8 +287,8 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(label),
-            Text('${value.round()}%'),
+            Text("$label - ${absValue.toInt()} ${S.of(context).gramUnit}"),
+            Text('${pctValue.round()}%'),
           ],
         ),
         SizedBox(
@@ -273,7 +302,7 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
             child: Slider(
               min: 5,
               max: 90,
-              value: value,
+              value: pctValue,
               divisions: 85,
               onChanged: (value) {
                 final newValue = value.round().toDouble();

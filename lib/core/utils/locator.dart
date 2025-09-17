@@ -85,7 +85,7 @@ Future<void> initLocator() async {
   locator.registerLazySingleton<ProfileBloc>(
       () => ProfileBloc(locator(), locator(), locator(), locator(), locator()));
   locator.registerLazySingleton(() =>
-      SettingsBloc(locator(), locator(), locator(), locator(), locator()));
+      SettingsBloc(locator(), locator(), locator(), locator(), locator(), locator()));
   locator.registerFactory(() => ExportImportBloc(locator(), locator()));
 
   locator.registerFactory<ActivitiesBloc>(() => ActivitiesBloc(locator()));

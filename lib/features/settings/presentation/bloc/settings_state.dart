@@ -16,12 +16,14 @@ class SettingsLoadingState extends SettingsState {
 
 class SettingsLoadedState extends SettingsState {
   final String versionNumber;
+  final UserEntity user;
   final bool showActivityTracker;
   final bool sendAnonymousData;
   final AppThemeEntity appTheme;
   final bool usesImperialUnits;
 
   const SettingsLoadedState(this.versionNumber,
+      this.user,
       this.showActivityTracker,
       this.sendAnonymousData,
       this.appTheme,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opennutritracker/core/domain/entity/app_theme_entity.dart';
+import 'package:opennutritracker/core/domain/entity/user_entity.dart';
 import 'package:opennutritracker/core/presentation/widgets/app_banner_version.dart';
 import 'package:opennutritracker/core/presentation/widgets/disclaimer_dialog.dart';
 import 'package:opennutritracker/core/utils/app_const.dart';
@@ -67,7 +68,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ListTile(
                   leading: const Icon(Icons.calculate_outlined),
                   title: Text(S.of(context).settingsCalculationsLabel),
-                  onTap: () => _showCalculationsDialog(context),
+                  onTap: () => _showCalculationsDialog(context, state.user),
                 ),
                 ListTile(
                   leading: const Icon(Icons.settings_applications),
@@ -169,7 +170,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  void _showCalculationsDialog(BuildContext context) {
+  void _showCalculationsDialog(BuildContext context, UserEntity user) {
     showDialog(
       context: context,
       builder: (context) => CalculationsDialog(
@@ -177,6 +178,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         profileBloc: _profileBloc,
         diaryBloc: _diaryBloc,
         calendarDayBloc: _calendarDayBloc,
+        user: user,
       ),
     );
   }
