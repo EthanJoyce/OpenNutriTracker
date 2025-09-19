@@ -96,6 +96,7 @@ class _DiaryPageState extends State<DiaryPage> with WidgetsBindingObserver {
             focusedDate: _focusedDate,
           ),
           const SizedBox(height: 16.0),
+          const Divider(),
           BlocBuilder<CalendarDayBloc, CalendarDayState>(
             bloc: _calendarDayBloc,
             builder: (context, state) {
