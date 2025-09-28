@@ -58,7 +58,7 @@ class TrackedDayRepository {
       double totalCarbsGoal,
       double totalFatGoal,
       double totalProteinGoal) async {
-    _trackedDayDataSource.saveTrackedDay(TrackedDayDBO(
+    await _trackedDayDataSource.saveTrackedDay(TrackedDayDBO(
         day: day,
         calorieGoal: totalKcalGoal,
         carbsGoal: totalCarbsGoal,

@@ -154,8 +154,8 @@ class MealDetailBottomSheet extends StatelessWidget {
     }
   }
 
-  void onAddButtonPressed(BuildContext context) {
-    mealDetailBloc.addIntake(
+  void onAddButtonPressed(BuildContext context) async {
+    await mealDetailBloc.addIntake(
         context,
         mealDetailBloc.state.selectedUnit,
         mealDetailBloc.state.totalQuantityConverted,
