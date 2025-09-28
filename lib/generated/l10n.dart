@@ -1123,6 +1123,16 @@ class S {
     );
   }
 
+  /// `Details`
+  String get nutrientDetailsLabel {
+    return Intl.message(
+      'Details',
+      name: 'nutrientDetailsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `kcal`
   String get kcalLabel {
     return Intl.message('kcal', name: 'kcalLabel', desc: '', args: []);
