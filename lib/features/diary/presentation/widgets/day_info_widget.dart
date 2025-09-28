@@ -111,7 +111,6 @@ class DayInfoWidget extends StatelessWidget {
               trackedDayEntity: trackedDayEntity,
             ),
             IntakeVerticalList(
-              //  TODO update these others as well
               day: selectedDay,
               title: S.of(context).lunchLabel,
               listIcon: Icons.lunch_dining_outlined,
