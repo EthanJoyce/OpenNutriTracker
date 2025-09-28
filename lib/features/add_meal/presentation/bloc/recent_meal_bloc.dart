@@ -22,7 +22,7 @@ class RecentMealBloc extends Bloc<RecentMealEvent, RecentMealState> {
       emit(RecentMealLoadingState());
       try {
         final config = await _getConfigUsecase.getConfig();
-        final searchString = (event.searchString).toLowerCase();
+        final searchString = event.searchString;
         final recentIntake = searchString.isEmpty ?
                                 await _getIntakeUsecase.getRecentIntakesOfType(event.intakeType) :
                                 await _getIntakeUsecase.getRecentIntake();
@@ -34,7 +34,7 @@ class RecentMealBloc extends Bloc<RecentMealEvent, RecentMealState> {
         } else {
           emit(RecentMealLoadedState(
               recentIntake: recentIntake
-                  .where(matchesSearchString(searchString))
+                  .where(createFunctionMatchesSearchString(searchString))
                   .toList(),
               usesImperialUnits: config.usesImperialUnits));
         }
@@ -45,9 +45,16 @@ class RecentMealBloc extends Bloc<RecentMealEvent, RecentMealState> {
     });
   }
 
-  bool Function(IntakeEntity) matchesSearchString(String searchString) {
-    return (intake) =>
-        (intake.meal.name?.toLowerCase().contains(searchString) ?? false) ||
-        (intake.meal.brands?.toLowerCase().contains(searchString) ?? false);
+  bool Function(IntakeEntity) createFunctionMatchesSearchString(String searchString) {
+    final searchTerms = searchString.toLowerCase().split(' ');
+    return (intake) {
+      bool matchesName = true;
+      bool matchesBrand = true;
+      for (String term in searchTerms) {
+        matchesName  &= (intake.meal.name?.toLowerCase().contains(term) ?? false);
+        matchesBrand &= (intake.meal.brands?.toLowerCase().contains(term) ?? false);
+      }
+      return matchesName || matchesBrand;
+    };
   }
 }
