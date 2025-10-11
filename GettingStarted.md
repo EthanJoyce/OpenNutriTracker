@@ -1,6 +1,6 @@
 # Getting Started
 For setup first you need the following things:
-- Flutter Version 3.27.1
+- Flutter Version 3.35.6 (Dart 3.9.2, DevTools 2.48.0)
 - IDE like Android Studio or VS Code with Flutter Plugin installed.
 
 ## Steps to run App

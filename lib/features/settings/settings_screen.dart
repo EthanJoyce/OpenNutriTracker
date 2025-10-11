@@ -130,7 +130,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Column(
                   children: [
                     DropdownButtonFormField(
-                      value: selectedUnit,
+                      initialValue: selectedUnit,
                       decoration: InputDecoration(
                         enabled: true,
                         filled: false,
@@ -242,41 +242,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
             content: StatefulBuilder(
               builder: (BuildContext context,
                   void Function(void Function()) setState) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    RadioListTile(
-                      title:
-                          Text(S.of(context).settingsThemeSystemDefaultLabel),
-                      value: AppThemeEntity.system,
-                      groupValue: selectedTheme,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedTheme = value as AppThemeEntity;
-                        });
-                      },
-                    ),
-                    RadioListTile(
-                      title: Text(S.of(context).settingsThemeLightLabel),
-                      value: AppThemeEntity.light,
-                      groupValue: selectedTheme,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedTheme = value as AppThemeEntity;
-                        });
-                      },
-                    ),
-                    RadioListTile(
-                      title: Text(S.of(context).settingsThemeDarkLabel),
-                      value: AppThemeEntity.dark,
-                      groupValue: selectedTheme,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedTheme = value as AppThemeEntity;
-                        });
-                      },
-                    ),
-                  ],
+                return RadioGroup<AppThemeEntity>(
+                  groupValue: selectedTheme,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedTheme = value as AppThemeEntity;
+                    });
+                  },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      RadioListTile<AppThemeEntity>(
+                        title: Text(S.of(context).settingsThemeSystemDefaultLabel),
+                        value: AppThemeEntity.system,
+                      ),
+                      RadioListTile<AppThemeEntity>(
+                        title: Text(S.of(context).settingsThemeLightLabel),
+                        value: AppThemeEntity.light,
+                      ),
+                      RadioListTile<AppThemeEntity>(
+                        title: Text(S.of(context).settingsThemeDarkLabel),
+                        value: AppThemeEntity.dark,
+                      ),
+                    ],
+                  )
                 );
               },
             ),
