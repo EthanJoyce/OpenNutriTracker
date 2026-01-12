@@ -11,6 +11,7 @@ import 'package:opennutritracker/core/utils/custom_icons.dart';
 import 'package:opennutritracker/features/add_meal/presentation/add_meal_type.dart';
 import 'package:opennutritracker/features/diary/presentation/widgets/dashboard_widget.dart';
 import 'package:opennutritracker/features/diary/presentation/widgets/intake_vertical_list.dart';
+import 'package:opennutritracker/features/diary/presentation/widgets/nutrient_details_widget.dart';
 import 'package:opennutritracker/generated/l10n.dart';
 
 class DayInfoWidget extends StatelessWidget {
@@ -57,7 +58,10 @@ class DayInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (kcalTracked, carbsTracked, fatTracked, proteinTracked) = _getCaloriesAndMacrosTracked();
+    final List<IntakeEntity> allIntakesList = List.from(breakfastIntake)..addAll(lunchIntake)
+                                                  ..addAll(dinnerIntake)..addAll(snackIntake);
+
+    final (kcalTracked, carbsTracked, fatTracked, proteinTracked) = _getCaloriesAndMacrosTracked(allIntakesList);
     final totalKcalActivities = userActivities.map((activity) => activity.burnedKcal).toList().sum;
     final kcalGoal = trackedDayEntity.calorieGoal;
     final carbsGoal = trackedDayEntity.carbsGoal ?? 0;
@@ -162,26 +166,33 @@ class DayInfoWidget extends StatelessWidget {
               trackedDayEntity: trackedDayEntity,
             ),
             const SizedBox(height: 16.0),
+            Visibility(
+              visible: allIntakesList.isNotEmpty,
+              child:
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child:
+                    NutrientDetailsWidget(intakes: allIntakesList)
+                ),
+            ),
+            const SizedBox(height: 64.0),
           ],
         )
       ],
     );
   }
 
-  (double, double, double, double) _getCaloriesAndMacrosTracked() {
+  (double, double, double, double) _getCaloriesAndMacrosTracked(List<IntakeEntity> intakes) {
     double caloriesTracked = 0;
     double carbsTracked = 0;
     double fatTracked = 0;
     double proteinTracked = 0;
 
-    final List<List<IntakeEntity>> intakeEntityLists = [breakfastIntake, lunchIntake, dinnerIntake, snackIntake];
-    for (var intakeList in intakeEntityLists) {
-      for (var intakeItem in intakeList) {
-        caloriesTracked += intakeItem.totalKcal;
-        carbsTracked += intakeItem.totalCarbsGram;
-        fatTracked += intakeItem.totalFatsGram;
-        proteinTracked += intakeItem.totalProteinsGram;
-      }
+    for (var intakeItem in intakes) {
+      caloriesTracked += intakeItem.totalKcal;
+      carbsTracked += intakeItem.totalCarbsGram;
+      fatTracked += intakeItem.totalFatsGram;
+      proteinTracked += intakeItem.totalProteinsGram;
     }
     return (caloriesTracked, carbsTracked, fatTracked, proteinTracked);
   }

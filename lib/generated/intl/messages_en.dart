@@ -242,6 +242,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noResultsFound": MessageLookupByLibrary.simpleMessage("No results found"),
     "notAvailableLabel": MessageLookupByLibrary.simpleMessage("N/A"),
     "nothingAddedLabel": MessageLookupByLibrary.simpleMessage("Nothing added"),
+    "nutrientDetailsLabel": MessageLookupByLibrary.simpleMessage("Details"),
     "nutritionInfoLabel": MessageLookupByLibrary.simpleMessage(
       "Nutrition Information",
     ),

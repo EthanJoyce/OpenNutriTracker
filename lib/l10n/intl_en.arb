@@ -122,6 +122,7 @@
   "burnedLabel": "burned",
   "kcalLeftLabel": "kcal left",
   "nutritionInfoLabel": "Nutrition Information",
+  "nutrientDetailsLabel": "Details",
   "kcalLabel": "kcal",
   "carbsLabel": "carbs",
   "carbsLabelShort": "c",
