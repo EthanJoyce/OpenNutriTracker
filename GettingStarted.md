@@ -3,6 +3,10 @@ For setup first you need the following things:
 - Flutter Version 3.35.6 (Dart 3.9.2, DevTools 2.48.0)
 - IDE like Android Studio or VS Code with Flutter Plugin installed.
 
+If using VS Code, install the following extensions:
+- Flutter (author: Dart Code)
+- Flutter Intl (author: Localizely)
+
 ## Steps to run App
 1.⁠ ⁠Clone the repository with Git
 
