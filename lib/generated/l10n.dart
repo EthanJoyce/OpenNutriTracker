@@ -1113,10 +1113,10 @@ class S {
     return Intl.message('kcal left', name: 'kcalLeftLabel', desc: '', args: []);
   }
 
-  /// `Nutrition Information`
+  /// `Nutrition Facts`
   String get nutritionInfoLabel {
     return Intl.message(
-      'Nutrition Information',
+      'Nutrition Facts',
       name: 'nutritionInfoLabel',
       desc: '',
       args: [],
@@ -1161,6 +1161,11 @@ class S {
   /// `energy`
   String get energyLabel {
     return Intl.message('energy', name: 'energyLabel', desc: '', args: []);
+  }
+
+  /// `calories`
+  String get caloriesLabel {
+    return Intl.message('calories', name: 'caloriesLabel', desc: '', args: []);
   }
 
   /// `saturated fat`

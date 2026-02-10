@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:opennutritracker/core/domain/entity/intake_entity.dart';
 import 'package:opennutritracker/core/utils/calc/unit_calc.dart';
+import 'package:opennutritracker/features/meal_detail/presentation/widgets/meal_detail_nutriments_table.dart';
 import 'package:opennutritracker/generated/l10n.dart';
 
 class EditDialog extends StatefulWidget {
@@ -16,6 +18,7 @@ class EditDialog extends StatefulWidget {
 
 class _EditDialogState extends State<EditDialog> {
   late TextEditingController amountEditingController;
+  String _amountStr = '';
 
   @override
   void initState() {
@@ -24,11 +27,17 @@ class _EditDialogState extends State<EditDialog> {
         widget.intakeEntity.amount, widget.intakeEntity.meal.servingUnit);
     // Show 2 decimal places only if amount has a decimal component
     // I.e 2.374 => 2.37, while 2.00 => 2
-    String initialAmountStr = (initialAmount.floor() == initialAmount)
+    _amountStr = (initialAmount.floor() == initialAmount)
           ? initialAmount.toStringAsFixed(0)
           : initialAmount.toStringAsFixed(2);
     amountEditingController =
-        TextEditingController(text: initialAmountStr);
+        TextEditingController(text: _amountStr);
+  }
+
+  @override
+  void dispose() {
+    amountEditingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -36,9 +45,22 @@ class _EditDialogState extends State<EditDialog> {
     return AlertDialog(
       title: Text(S.of(context).editItemDialogTitle),
       content: Column(mainAxisSize: MainAxisSize.min, children: [
+        MealDetailNutrimentsTable(
+            product: widget.intakeEntity.meal,
+            usesImperialUnits: widget.usesImperialUnits,
+            servingQuantity: amountEditingController.text == '' ?
+                0 : double.parse(amountEditingController.text.replaceAll(',', '.')),
+            servingUnit: widget.intakeEntity.meal.servingUnit),
+        const SizedBox(height: 16.0),
         TextFormField(
-          controller: amountEditingController,
+          controller: amountEditingController
+            ..addListener(() {
+              setState(() {
+                _amountStr = amountEditingController.text;
+              });
+            }),
           keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
           decoration: InputDecoration(
               labelText: S.of(context).quantityLabel,
               suffixText:

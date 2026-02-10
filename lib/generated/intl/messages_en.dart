@@ -88,6 +88,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "calculationsTDEELabel": MessageLookupByLibrary.simpleMessage(
       "TDEE equation",
     ),
+    "caloriesLabel": MessageLookupByLibrary.simpleMessage("calories"),
     "carbohydrateLabel": MessageLookupByLibrary.simpleMessage("carbohydrate"),
     "carbsLabel": MessageLookupByLibrary.simpleMessage("carbs"),
     "carbsLabelShort": MessageLookupByLibrary.simpleMessage("c"),
@@ -243,7 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "notAvailableLabel": MessageLookupByLibrary.simpleMessage("N/A"),
     "nothingAddedLabel": MessageLookupByLibrary.simpleMessage("Nothing added"),
     "nutritionInfoLabel": MessageLookupByLibrary.simpleMessage(
-      "Nutrition Information",
+      "Nutrition Facts",
     ),
     "nutritionalStatusNormalWeight": MessageLookupByLibrary.simpleMessage(
       "Normal Weight",

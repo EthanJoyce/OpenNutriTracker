@@ -18,61 +18,95 @@ class MealDetailNutrimentsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyleNormal =
+    final textStyleNormalMedium =
         Theme.of(context).textTheme.bodyMedium ?? const TextStyle();
-    final textStyleBold = Theme.of(context)
+    final textStyleBoldMedium = Theme.of(context)
             .textTheme
             .bodyMedium
             ?.copyWith(fontWeight: FontWeight.bold) ??
         const TextStyle();
-
-    final headerText = usesImperialUnits && servingQuantity != null
-        ? "${S.of(context).perServingLabel} (${servingQuantity!.roundToPrecision(1)}${servingUnit ?? 'g/ml'})"
-        : S.of(context).per100gmlLabel;
+    final textStyleBoldTitle = Theme.of(context)
+            .textTheme
+            .headlineSmall
+            ?.copyWith(fontWeight: FontWeight.bold) ??
+        const TextStyle();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(S.of(context).nutritionInfoLabel,
-            style: Theme.of(context).textTheme.titleLarge),
-        const SizedBox(height: 16.0),
         Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          border: TableBorder.all(
-              color: Theme.of(context)
-                  .colorScheme
-                  .onSurface
-                  .withValues(alpha: 0.5)),
+          defaultColumnWidth: MinColumnWidth(const FixedColumnWidth(250), FractionColumnWidth(1.0)),
+          border: TableBorder.symmetric(
+            inside: BorderSide.none,
+            outside: BorderSide(width: 1, color: Colors.black),
+          ),
           children: <TableRow>[
-            _getNutrimentsTableRow("", headerText, textStyleBold),
+            _getNutrimentsTableRow(context, "", textStyleBoldTitle, S.of(context).nutritionInfoLabel, textStyleBoldTitle, MainAxisAlignment.center),
+            _getDividerTableRow(context, 2.0),
             _getNutrimentsTableRow(
-                S.of(context).energyLabel,
-                "${_adjustValueForServing(product.nutriments.energyKcal100?.toDouble() ?? 0).toInt()} ${S.of(context).kcalLabel}",
-                textStyleNormal),
+                context,
+                S.of(context).perServingLabel,
+                textStyleBoldMedium,
+                "${servingQuantity!.roundToPrecision(1)} ${servingUnit ?? 'g/ml'}",
+                textStyleBoldMedium,
+                MainAxisAlignment.spaceBetween),
+            _getDividerTableRow(context, 10.0),
             _getNutrimentsTableRow(
+                context,
+                S.of(context).caloriesLabel,
+                textStyleBoldTitle,
+                "${_adjustValueForServing(product.nutriments.energyKcal100?.toDouble() ?? 0).toInt()}",
+                textStyleBoldTitle,
+                MainAxisAlignment.spaceBetween),
+            _getDividerTableRow(context, 5.0),
+            _getNutrimentsTableRow(
+                context,
                 S.of(context).fatLabel,
-                "${_adjustValueForServing(product.nutriments.fat100 ?? 0).roundToPrecision(2)}g",
-                textStyleNormal),
+                textStyleBoldMedium,
+                "${_adjustValueForServing(product.nutriments.fat100 ?? 0).roundToPrecision(1)}g",
+                textStyleNormalMedium,
+                MainAxisAlignment.start),
+            _getDividerTableRow(context, 1.0),
             _getNutrimentsTableRow(
+                context,
                 '   ${S.of(context).saturatedFatLabel}',
-                "${_adjustValueForServing(product.nutriments.saturatedFat100 ?? 0).roundToPrecision(2)}g",
-                textStyleNormal),
+                textStyleNormalMedium,
+                "${_adjustValueForServing(product.nutriments.saturatedFat100 ?? 0).roundToPrecision(1)}g",
+                textStyleNormalMedium,
+                MainAxisAlignment.start),
+            _getDividerTableRow(context, 2.0),
             _getNutrimentsTableRow(
+                context,
                 S.of(context).carbohydrateLabel,
-                "${_adjustValueForServing(product.nutriments.carbohydrates100 ?? 0).roundToPrecision(2)}g",
-                textStyleNormal),
+                textStyleBoldMedium,
+                "${_adjustValueForServing(product.nutriments.carbohydrates100 ?? 0).roundToPrecision(1)}g",
+                textStyleNormalMedium,
+                MainAxisAlignment.start),
+            _getDividerTableRow(context, 1.0),
             _getNutrimentsTableRow(
+                context,
+                '    ${S.of(context).fiberLabel}',
+                textStyleNormalMedium,
+                "${_adjustValueForServing(product.nutriments.fiber100 ?? 0).roundToPrecision(1)}g",
+                textStyleNormalMedium,
+                MainAxisAlignment.start),
+            _getDividerTableRow(context, 1.0),
+            _getNutrimentsTableRow(
+                context,
                 '    ${S.of(context).sugarLabel}',
-                "${_adjustValueForServing(product.nutriments.sugars100 ?? 0).roundToPrecision(2)}g",
-                textStyleNormal),
+                textStyleNormalMedium,
+                "${_adjustValueForServing(product.nutriments.sugars100 ?? 0).roundToPrecision(1)}g",
+                textStyleNormalMedium,
+                MainAxisAlignment.start),
+            _getDividerTableRow(context, 1.0),
             _getNutrimentsTableRow(
-                S.of(context).fiberLabel,
-                "${_adjustValueForServing(product.nutriments.fiber100 ?? 0).roundToPrecision(2)}g",
-                textStyleNormal),
-            _getNutrimentsTableRow(
+                context,
                 S.of(context).proteinLabel,
-                "${_adjustValueForServing(product.nutriments.proteins100 ?? 0).roundToPrecision(2)}g",
-                textStyleNormal)
+                textStyleBoldMedium,
+                "${_adjustValueForServing(product.nutriments.proteins100 ?? 0).roundToPrecision(1)}g",
+                textStyleNormalMedium,
+                MainAxisAlignment.start)
           ],
         )
       ],
@@ -80,7 +114,7 @@ class MealDetailNutrimentsTable extends StatelessWidget {
   }
 
   double _adjustValueForServing(double value) {
-    if (!usesImperialUnits || servingQuantity == null) {
+    if (servingQuantity == null) {
       return value;
     }
     // Calculate per serving value based on 100g reference
@@ -88,15 +122,28 @@ class MealDetailNutrimentsTable extends StatelessWidget {
   }
 
   TableRow _getNutrimentsTableRow(
-      String label, String quantityString, TextStyle textStyle) {
+      BuildContext context, String label, TextStyle labelTextStyle, String quantityString, TextStyle quantityTextStyle, MainAxisAlignment alignment) {
     return TableRow(children: <Widget>[
       Container(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Text(label, style: textStyle)),
-      Container(
-          padding: const EdgeInsets.only(right: 8.0),
-          alignment: Alignment.centerRight,
-          child: Text(quantityString, style: textStyle)),
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+        child: Row(
+          mainAxisAlignment: alignment,
+          children: [
+            Text(label, style: labelTextStyle),
+            Text(" "),
+            Text(quantityString, style: quantityTextStyle),
+          ]
+        )
+      ),
     ]);
+  }
+
+  TableRow _getDividerTableRow(
+      BuildContext context, double thickness) {
+    return TableRow(
+      children: [
+        Divider(height: thickness, thickness: thickness, indent: 8, endIndent: 8, color: Colors.black),
+      ],
+    );
   }
 }
