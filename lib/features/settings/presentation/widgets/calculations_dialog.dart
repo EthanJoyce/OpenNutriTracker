@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:opennutritracker/core/utils/calc/macro_calc.dart';
 import 'package:opennutritracker/core/utils/calc/calorie_goal_calc.dart';
 import 'package:opennutritracker/core/domain/entity/user_entity.dart';
@@ -36,10 +37,8 @@ enum MacroSelectionType {
 }
 
 class _CalculationsDialogState extends State<CalculationsDialog> {
-  static const double _maxKcalAdjustment = 1000;
-  static const double _minKcalAdjustment = -1000;
-  static const int _kcalDivisions = 200;
-  double _kcalAdjustmentSelection = 0;
+  late TextEditingController _kcalGoalEditingController;
+  double _kcalAdjustment = 0;
 
   static const double _defaultCarbsPctSelection = 0.6;
   static const double _defaultFatPctSelection = 0.25;
@@ -56,8 +55,9 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
   MacroSelectionType _currentChangingMacro = MacroSelectionType.none;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
+    _kcalGoalEditingController = TextEditingController();
     _initializeKcalAdjustment();
   }
 
@@ -69,7 +69,7 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
     final userFatPct = await widget.settingsBloc.getUserFatGoalPct();
 
     setState(() {
-      _kcalAdjustmentSelection = kcalAdjustment;
+      _kcalAdjustment = kcalAdjustment;
       _carbsPctSelection = (userCarbsPct ?? _defaultCarbsPctSelection) * 100;
       _proteinPctSelection =
           (userProteinPct ?? _defaultProteinPctSelection) * 100;
@@ -78,15 +78,24 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
   }
 
   @override
+  void dispose() {
+    _kcalGoalEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final kcalDefaultValue = CalorieGoalCalc.getTotalKcalGoal(widget.user,
+        /*totalKcalActivities=*/0, kcalUserAdjustment: 0);
     final kcalAbsValue = CalorieGoalCalc.getTotalKcalGoal(widget.user,
-        /*totalKcalActivities=*/0, kcalUserAdjustment: _kcalAdjustmentSelection);
+        /*totalKcalActivities=*/0, kcalUserAdjustment: _kcalAdjustment);
     final carbsAbsValue = MacroCalc.getTotalCarbsGoal(kcalAbsValue,
         userCarbsGoal: (_carbsPctSelection / 100.0));
     final proteinAbsValue = MacroCalc.getTotalProteinsGoal(kcalAbsValue,
         userProteinsGoal: (_proteinPctSelection / 100.0));
     final fatAbsValue = MacroCalc.getTotalFatsGoal(kcalAbsValue,
         userFatsGoal: (_fatPctSelection / 100.0));
+    _kcalGoalEditingController.text = kcalAbsValue.roundToDouble().toInt().toString();
     return AlertDialog(
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,7 +111,7 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
             child: Text(S.of(context).buttonResetLabel),
             onPressed: () {
               setState(() {
-                _kcalAdjustmentSelection = 0;
+                _kcalAdjustment = 0;
                 // Reset macros to default values
                 _carbsPctSelection = _defaultCarbsPctSelection * 100;
                 _proteinPctSelection = _defaultProteinPctSelection * 100;
@@ -114,62 +123,23 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
       ),
       content: Wrap(
         children: [
-          DropdownButtonFormField(
-              isExpanded: true,
-              decoration: InputDecoration(
-                enabled: false,
-                filled: false,
-                labelText: S.of(context).calculationsTDEELabel,
-              ),
-              items: [
-                DropdownMenuItem(
-                    child: Text(
-                  '${S.of(context).calculationsTDEEIOM2006Label} ${S.of(context).calculationsRecommendedLabel}',
-                  overflow: TextOverflow.ellipsis,
-                )),
-              ],
-              onChanged: null),
-          const SizedBox(height: 80),
-          Container(
-            alignment: Alignment.center,
-            child: Text(
-              '${kcalAbsValue.toInt()} ${S.of(context).kcalLabel}',
-              style: Theme.of(context).textTheme.titleLarge,
+          TextFormField(
+            controller: _kcalGoalEditingController
+              ..addListener(() {
+                setState(() {
+                  final newKcalGoal = double.tryParse(_kcalGoalEditingController.text) ?? 0;
+                  _kcalAdjustment = newKcalGoal - kcalDefaultValue;
+                });
+              }),
+            style: Theme.of(context).textTheme.titleLarge,
+            textAlign: TextAlign.center,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
+            decoration: InputDecoration(
+                suffixText: S.of(context).kcalLabel
             ),
           ),
-          const SizedBox(height: 48),
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              '${S.of(context).dailyKcalAdjustmentLabel} ${!_kcalAdjustmentSelection.isNegative ? "+" : ""}${_kcalAdjustmentSelection.round()} ${S.of(context).kcalLabel}',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: SizedBox(
-              width: 280,
-              child: Slider(
-                min: _minKcalAdjustment,
-                max: _maxKcalAdjustment,
-                divisions: _kcalDivisions,
-                value: _kcalAdjustmentSelection,
-                label:
-                    '${_kcalAdjustmentSelection.round()} ${S.of(context).kcalLabel}',
-                onChanged: (value) {
-                  setState(() {
-                    _kcalAdjustmentSelection = value;
-                  });
-                },
-              ),
-            ),
-          ),
-          const SizedBox(height: 32),
-          Text(
-            S.of(context).macroDistributionLabel,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 64),
           _buildMacroSlider(
             context,
             S.of(context).carbsLabel,
@@ -419,7 +389,7 @@ class _CalculationsDialogState extends State<CalculationsDialog> {
   void _saveCalculationSettings() {
     // Save the calorie offset as full number
     widget.settingsBloc
-        .setKcalAdjustment(_kcalAdjustmentSelection.toInt().toDouble());
+        .setKcalAdjustment(_kcalAdjustment);
     widget.settingsBloc.setMacroGoals(
         _carbsPctSelection, _proteinPctSelection, _fatPctSelection);
 

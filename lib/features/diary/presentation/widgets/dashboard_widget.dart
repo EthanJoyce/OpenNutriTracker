@@ -98,7 +98,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                       children: [
                         AnimatedFlipCounter(
                             duration: const Duration(milliseconds: 1000),
-                            value: kcalLeftLabel.toInt(),
+                            value: kcalLeftLabel.roundToDouble().toInt(),
                             textStyle: Theme.of(context)
                                 .textTheme
                                 .headlineMedium
