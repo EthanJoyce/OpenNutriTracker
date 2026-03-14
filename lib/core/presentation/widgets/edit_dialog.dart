@@ -59,8 +59,12 @@ class _EditDialogState extends State<EditDialog> {
                 _amountStr = amountEditingController.text;
               });
             }),
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
+          keyboardType: TextInputType.numberWithOptions(
+              decimal: true),
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(
+                RegExp(r'^\d+([.,]\d{0,2})?$'))
+          ],
           decoration: InputDecoration(
               labelText: S.of(context).quantityLabel,
               suffixText:
