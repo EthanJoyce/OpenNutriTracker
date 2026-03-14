@@ -55,7 +55,9 @@ class MealNutrimentsEntity extends Equatable {
   }
 
   factory MealNutrimentsEntity.fromOffNutriments(
-      OFFProductNutrimentsDTO offNutriments) {
+      OFFProductNutrimentsDTO? offNutriments) {
+    if (offNutriments == null) return MealNutrimentsEntity.empty();
+
     // 1. OFF product nutriments can either be String, int, double or null
     // 2. Extension function asDoubleOrNull does not work on a dynamic data
     // type, so cast to it Object?

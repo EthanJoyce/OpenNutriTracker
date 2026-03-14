@@ -16,6 +16,7 @@ class ProductsRepository {
         await _offDataSource.fetchSearchWordResults(searchString);
 
     final products = offWordResponse.products
+        .where((offProduct) => offProduct.nutriments != null)
         .map((offProduct) => MealEntity.fromOFFProduct(offProduct))
         .toList();
 
