@@ -48,7 +48,7 @@ class MealDetailNutrimentsTable extends StatelessWidget {
                 context,
                 S.of(context).perServingLabel,
                 textStyleBoldMedium,
-                "${servingQuantity!.toInt()} ${servingUnit ?? 'g/ml'}",
+                "${(servingQuantity ?? 0).toInt()} ${servingUnit ?? 'g/ml'}",
                 textStyleBoldMedium,
                 MainAxisAlignment.spaceBetween),
             _getDividerTableRow(context, 10.0),
