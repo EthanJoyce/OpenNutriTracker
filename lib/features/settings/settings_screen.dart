@@ -59,6 +59,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             return ListView(
               children: [
                 const SizedBox(height: 16.0),
+                AppBannerVersion(versionNumber: state.versionNumber),
+                const SizedBox(height: 32.0),
                 ListTile(
                   leading: const Icon(Icons.ac_unit_outlined),
                   title: Text(S.of(context).settingsUnitsLabel),
@@ -106,8 +108,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: Text(S.of(context).settingAboutLabel),
                   onTap: () => _showAboutDialog(context),
                 ),
-                const SizedBox(height: 32.0),
-                AppBannerVersion(versionNumber: state.versionNumber)
               ],
             );
           }
