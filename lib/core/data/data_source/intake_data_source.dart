@@ -66,6 +66,14 @@ class IntakeDataSource {
   Future<List<IntakeDBO>> getRecentlyAddedIntake({IntakeTypeDBO intakeType = IntakeTypeDBO.invalid, int? number}) async {
     final intakeList = _intakeBox.values.toList();
 
+    // sort list by date (newest first)
+    //
+    // note that this must be done before removing duplicates,
+    // otherwise we may remove earlier instances of the same intake
+    // item, resulting in the final list being out of order
+    intakeList
+        .sort((a, b) =>  (-1) * a.dateTime.compareTo(b.dateTime));
+
     // filter list for unique intakes and correct intake type
     final filterCodes = <String>{};
     final uniqueIntake = intakeList
@@ -76,10 +84,6 @@ class IntakeDataSource {
           )
         )
         .toList();
-
-    //  sort list by date (newest first)
-    uniqueIntake
-        .sort((a, b) =>  (-1) * a.dateTime.compareTo(b.dateTime));
 
     if (number != null) {
       return uniqueIntake.take(number).toList();
