@@ -156,6 +156,7 @@ class _EditMealScreenState extends State<EditMealScreen> {
               labelText: S.of(context).mealNameLabel,
               border: const OutlineInputBorder()),
           keyboardType: TextInputType.text,
+          textCapitalization: TextCapitalization.words,
         ),
         const SizedBox(height: 16),
         TextFormField(
@@ -164,6 +165,7 @@ class _EditMealScreenState extends State<EditMealScreen> {
               labelText: S.of(context).mealBrandsLabel,
               border: const OutlineInputBorder()),
           keyboardType: TextInputType.text,
+          textCapitalization: TextCapitalization.words,
         ),
         const SizedBox(height: 32),
         TextFormField(
