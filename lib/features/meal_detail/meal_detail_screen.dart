@@ -286,9 +286,6 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
   }
 
   void onQuantityOrUnitChanged(String? quantityString, String? unit) {
-    if (quantityString == null || unit == null) {
-      return;
-    }
     _mealDetailBloc.add(UpdateKcalEvent(
         meal: meal, totalQuantity: quantityString, selectedUnit: unit));
     _scrollToCalorieText();

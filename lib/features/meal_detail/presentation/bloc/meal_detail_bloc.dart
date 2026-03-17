@@ -31,13 +31,13 @@ class MealDetailBloc extends Bloc<MealDetailEvent, MealDetailState> {
             selectedUnit: UnitDropdownItem.gml.toString())) {
     on<UpdateKcalEvent>((event, emit) async {
       try {
-        final selectedTotalQuantity =
-            event.totalQuantity ?? state.totalQuantityConverted;
-        final selectedUnit = event.selectedUnit ?? state.selectedUnit;
-
-        if (selectedUnit.isEmpty || selectedTotalQuantity.isEmpty) {
-          return;
+        String selectedTotalQuantity;
+        if (event.totalQuantity == null || event.totalQuantity!.isEmpty) {
+          selectedTotalQuantity = "0"; // default to zero quantity
+        } else {
+          selectedTotalQuantity = event.totalQuantity!;
         }
+        final selectedUnit = event.selectedUnit ?? state.selectedUnit;
 
         final energyPerUnit = (event.meal.nutriments.energyPerUnit ?? 0);
         final carbsPerUnit = (event.meal.nutriments.carbohydratesPerUnit ?? 0);
