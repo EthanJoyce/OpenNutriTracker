@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:opennutritracker/core/presentation/widgets/add_item_bottom_sheet.dart';
 import 'package:opennutritracker/features/diary/diary_page.dart';
+import 'package:opennutritracker/core/domain/usecase/get_config_usecase.dart';
+import 'package:opennutritracker/core/utils/locator.dart';
+import 'package:opennutritracker/core/presentation/widgets/add_item_bottom_sheet.dart';
 import 'package:opennutritracker/core/presentation/widgets/home_appbar.dart';
 import 'package:opennutritracker/core/presentation/widgets/main_appbar.dart';
 import 'package:opennutritracker/features/profile/profile_page.dart';
@@ -14,10 +16,18 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  late GetConfigUsecase _getConfigUsecase;
+
   int _selectedPageIndex = 0;
 
   late List<Widget> _bodyPages;
   late List<PreferredSizeWidget> _appbarPages;
+
+  @override
+  void initState() {
+    _getConfigUsecase = locator<GetConfigUsecase>();
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -71,15 +81,18 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _onFabPressed(BuildContext context) async {
-    showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16.0),
-                topRight: Radius.circular(16.0))),
-        builder: (BuildContext context) {
-          return AddItemBottomSheet(day: DateTime.now());
-        });
+    final showActivityTracker = (await _getConfigUsecase.getConfig()).showActivityTracker;
+    if (context.mounted) {
+      showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.0),
+                  topRight: Radius.circular(16.0))),
+          builder: (BuildContext context) {
+            return AddItemBottomSheet(day: DateTime.now(), showActivityTracker: showActivityTracker);
+          });
+    }
   }
 }

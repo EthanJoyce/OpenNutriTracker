@@ -9,8 +9,9 @@ import 'package:opennutritracker/generated/l10n.dart';
 
 class AddItemBottomSheet extends StatelessWidget {
   final DateTime day;
+  final bool showActivityTracker;
 
-  const AddItemBottomSheet({super.key, required this.day});
+  const AddItemBottomSheet({super.key, required this.day, required this.showActivityTracker});
 
   @override
   Widget build(BuildContext context) {
@@ -28,30 +29,34 @@ class AddItemBottomSheet extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onSurface),
             ),
           ),
-          ListTile(
-            title: Text(
-              S.of(context).activityLabel,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
-            ),
-            subtitle: Text(
-              S.of(context).activityExample,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)),
-            ),
-            // ignore: sized_box_for_whitespace
-            leading: Container(
-                height: double.infinity,
-                child: Icon(
-                  UserActivityEntity.getIconData(),
-                  color: Theme.of(context).colorScheme.onSurface,
-                )),
-            onTap: () {
-              _showAddActivityScreen(context);
-            },
+          Visibility(
+            visible: showActivityTracker,
+            child:
+              ListTile(
+                title: Text(
+                  S.of(context).activityLabel,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                ),
+                subtitle: Text(
+                  S.of(context).activityExample,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color:
+                          Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)),
+                ),
+                // ignore: sized_box_for_whitespace
+                leading: Container(
+                    height: double.infinity,
+                    child: Icon(
+                      UserActivityEntity.getIconData(),
+                      color: Theme.of(context).colorScheme.onSurface,
+                    )),
+                onTap: () {
+                  _showAddActivityScreen(context);
+                },
+              ),
           ),
           const Divider(indent: 16, endIndent: 16),
           ListTile(
