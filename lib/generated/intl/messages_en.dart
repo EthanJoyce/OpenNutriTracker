@@ -744,6 +744,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "sendAnonymousUserData": MessageLookupByLibrary.simpleMessage(
       "Send anonymous usage data",
     ),
+    "servingDescription": MessageLookupByLibrary.simpleMessage(
+      "Serving description (e.g. \"2 slices\")",
+    ),
     "servingLabel": MessageLookupByLibrary.simpleMessage("Serving"),
     "servingSizeLabelImperial": MessageLookupByLibrary.simpleMessage(
       "Serving size (oz/fl oz)",

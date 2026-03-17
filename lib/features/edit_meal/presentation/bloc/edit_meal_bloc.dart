@@ -25,6 +25,7 @@ class EditMealBloc extends Bloc<EditMealEvent, EditMealState> {
       MealEntity oldMealEntity,
       String nameText,
       String brandsText,
+      String servingDescription,
       String servingQuantityText,
       String? unitText,
       String kcalText,
@@ -59,7 +60,7 @@ class EditMealBloc extends Bloc<EditMealEvent, EditMealState> {
         mainImageUrl: oldMealEntity.mainImageUrl,
         servingQuantity: servingQuantityText.toDoubleOrNull(),
         servingUnit: unitText,
-        servingSize: oldMealEntity.servingSize,
+        servingSize: servingDescription.toStringOrNull(),
         nutriments: newMealNutriments,
         source: oldMealEntity.source);
   }

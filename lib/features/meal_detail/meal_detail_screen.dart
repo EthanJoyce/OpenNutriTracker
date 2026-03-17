@@ -263,6 +263,7 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
                 MealDetailNutrimentsTable(
                     product: meal,
                     usesImperialUnits: _usesImperialUnits,
+                    servingDescription: meal.servingSize,
                     servingQuantity: meal.servingQuantity,
                     servingUnit: meal.servingUnit),
                 const SizedBox(height: 32.0),

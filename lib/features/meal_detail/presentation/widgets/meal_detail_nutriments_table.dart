@@ -6,6 +6,7 @@ import 'package:opennutritracker/generated/l10n.dart';
 class MealDetailNutrimentsTable extends StatelessWidget {
   final MealEntity product;
   final bool usesImperialUnits;
+  final String? servingDescription;
   final double? servingQuantity;
   final String? servingUnit;
 
@@ -13,6 +14,7 @@ class MealDetailNutrimentsTable extends StatelessWidget {
       {super.key,
       required this.product,
       required this.usesImperialUnits,
+      this.servingDescription,
       this.servingQuantity,
       this.servingUnit});
 
@@ -48,7 +50,7 @@ class MealDetailNutrimentsTable extends StatelessWidget {
                 context,
                 S.of(context).perServingLabel,
                 textStyleBoldMedium,
-                "${(servingQuantity ?? 0).toInt()} ${servingUnit ?? 'g/ml'}",
+                _getServingQuantityString(servingDescription, servingQuantity, servingUnit),
                 textStyleBoldMedium,
                 MainAxisAlignment.spaceBetween),
             _getDividerTableRow(context, 10.0),
@@ -111,6 +113,14 @@ class MealDetailNutrimentsTable extends StatelessWidget {
         )
       ],
     );
+  }
+
+  String _getServingQuantityString(String? servingDescription, double? servingQuantity, String? servingUnit) {
+    if ((servingDescription == null) || (servingDescription.isEmpty)) {
+      return "${(servingQuantity ?? 0).toInt()} ${servingUnit ?? 'g/ml'}";
+    } else {
+      return servingDescription;
+    }
   }
 
   double _adjustValueForServing(double value) {

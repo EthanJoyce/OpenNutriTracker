@@ -1383,6 +1383,16 @@ class S {
     );
   }
 
+  /// `Serving description (e.g. "2 slices")`
+  String get servingDescription {
+    return Intl.message(
+      'Serving description (e.g. "2 slices")',
+      name: 'servingDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Serving size (g/ml)`
   String get servingSizeLabelMetric {
     return Intl.message(

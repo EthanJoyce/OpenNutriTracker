@@ -48,6 +48,7 @@ class _EditDialogState extends State<EditDialog> {
         MealDetailNutrimentsTable(
             product: widget.intakeEntity.meal,
             usesImperialUnits: widget.usesImperialUnits,
+            servingDescription: null, // since serving description is a string, it will be difficult to adjust it as quantities change
             servingQuantity: amountEditingController.text == '' ?
                 0 : double.parse(amountEditingController.text.replaceAll(',', '.')),
             servingUnit: widget.intakeEntity.meal.servingUnit),

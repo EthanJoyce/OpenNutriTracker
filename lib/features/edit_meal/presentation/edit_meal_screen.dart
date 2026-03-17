@@ -33,6 +33,7 @@ class _EditMealScreenState extends State<EditMealScreen> {
 
   final _nameTextController = TextEditingController();
   final _brandsTextController = TextEditingController();
+  final _servingDescriptionTextController = TextEditingController();
   final _servingQuantityTextController = TextEditingController();
   final _kcalTextController = TextEditingController();
   final _carbsTextController = TextEditingController();
@@ -62,6 +63,7 @@ class _EditMealScreenState extends State<EditMealScreen> {
 
     _nameTextController.text = _mealEntity.name ?? "";
     _brandsTextController.text = _mealEntity.brands ?? "";
+    _servingDescriptionTextController.text = _mealEntity.servingSize ?? "";
     _servingQuantityTextController.text = toPrettyString(_mealEntity.servingQuantity);
     _kcalTextController.text = toPrettyString(_mealEntity.kcalPerServing);
     _fatTextController.text = toPrettyString(_mealEntity.fatPerServing);
@@ -94,6 +96,19 @@ class _EditMealScreenState extends State<EditMealScreen> {
     ];
 
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _nameTextController.dispose();
+    _brandsTextController.dispose();
+    _servingDescriptionTextController.dispose();
+    _servingQuantityTextController.dispose();
+    _kcalTextController.dispose();
+    _fatTextController.dispose();
+    _carbsTextController.dispose();
+    _proteinTextController.dispose();
+    super.dispose();
   }
 
   @override
@@ -169,6 +184,14 @@ class _EditMealScreenState extends State<EditMealScreen> {
         ),
         const SizedBox(height: 32),
         TextFormField(
+          controller: _servingDescriptionTextController,
+          decoration: InputDecoration(
+              labelText: S.of(context).servingDescription,
+              border: const OutlineInputBorder()),
+          keyboardType: TextInputType.text,
+        ),
+        const SizedBox(height: 16),
+        TextFormField(
           controller: _servingQuantityTextController,
           inputFormatters: CustomTextInputFormatter.doubleOnly(),
           decoration: InputDecoration(
@@ -236,6 +259,7 @@ class _EditMealScreenState extends State<EditMealScreen> {
           _mealEntity,
           _nameTextController.text,
           _brandsTextController.text,
+          _servingDescriptionTextController.text,
           _servingQuantityTextController.text,
           selectedUnit,
           _kcalTextController.text,
