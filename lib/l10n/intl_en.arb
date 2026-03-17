@@ -5,8 +5,6 @@
   "alphaVersionName": "[Alpha]",
   "betaVersionName": "[Beta]",
   "addLabel": "Add",
-  "createCustomDialogTitle": "Create custom meal item?",
-  "createCustomDialogContent": "Do you want create a custom meal item?",
   "settingsLabel": "Settings",
   "homeLabel": "Home",
   "diaryLabel": "Diary",

@@ -5,8 +5,6 @@
   "alphaVersionName": "[Alpha]",
   "betaVersionName": "[Beta]",
   "addLabel": "Ekle",
-  "createCustomDialogTitle": "Özel yemek öğesi oluştur?",
-  "createCustomDialogContent": "Özel bir yemek öğesi oluşturmak istiyor musunuz?",
   "settingsLabel": "Ayarlar",
   "homeLabel": "Ana Sayfa",
   "diaryLabel": "Günlük",

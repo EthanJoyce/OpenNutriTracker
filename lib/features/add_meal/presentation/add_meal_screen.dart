@@ -77,7 +77,7 @@ class _AddMealScreenState extends State<AddMealScreen>
                 if (state is AddMealLoadedState) {
                   return IconButton(
                     onPressed: () =>
-                        _onCustomAddButtonPressed(state.usesImperialUnits),
+                        _openEditMealScreen(state.usesImperialUnits),
                     icon: const Icon(Icons.add_circle_outline),
                   );
                 }
@@ -275,28 +275,6 @@ class _AddMealScreenState extends State<AddMealScreen>
   void _onBarcodeIconPressed() {
     Navigator.of(context).pushNamed(NavigationOptions.scannerRoute,
         arguments: ScannerScreenArguments(_day, _mealType.getIntakeType()));
-  }
-
-  void _onCustomAddButtonPressed(bool usesImperialUnits) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(S.of(context).createCustomDialogTitle),
-            content: Text(S.of(context).createCustomDialogContent),
-            actions: [
-              TextButton(
-                  onPressed: () => Navigator.of(context).pop(), // close dialog
-                  child: Text(S.of(context).dialogCancelLabel)),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Close dialog
-                    _openEditMealScreen(usesImperialUnits);
-                  },
-                  child: Text(S.of(context).buttonYesLabel)),
-            ],
-          );
-        });
   }
 
   void _openEditMealScreen(bool usesImperialUnits) {

@@ -105,12 +105,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "copyOrDeleteTimeDialogTitle": MessageLookupByLibrary.simpleMessage(
       "What do you want to do?",
     ),
-    "createCustomDialogContent": MessageLookupByLibrary.simpleMessage(
-      "Do you want create a custom meal item?",
-    ),
-    "createCustomDialogTitle": MessageLookupByLibrary.simpleMessage(
-      "Create custom meal item?",
-    ),
     "dailyKcalAdjustmentLabel": MessageLookupByLibrary.simpleMessage(
       "Daily Kcal adjustment:",
     ),

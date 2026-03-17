@@ -5,8 +5,6 @@
   "alphaVersionName": "[Alpha]",
   "betaVersionName": "[Beta]",
   "addLabel": "Hinzufügen",
-  "createCustomDialogTitle": "Benutzerdefinierte Mahlzeit erstellen?",
-  "createCustomDialogContent": "Möchten Sie einen benutzerdefinierte Mahlzeit erstellen?",
   "settingsLabel": "Einstellungen",
   "homeLabel": "Startseite",
   "diaryLabel": "Tagebuch",

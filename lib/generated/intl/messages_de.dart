@@ -106,12 +106,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "copyOrDeleteTimeDialogTitle": MessageLookupByLibrary.simpleMessage(
       "Was soll getan werden?",
     ),
-    "createCustomDialogContent": MessageLookupByLibrary.simpleMessage(
-      "Möchten Sie einen benutzerdefinierte Mahlzeit erstellen?",
-    ),
-    "createCustomDialogTitle": MessageLookupByLibrary.simpleMessage(
-      "Benutzerdefinierte Mahlzeit erstellen?",
-    ),
     "dailyKcalAdjustmentLabel": MessageLookupByLibrary.simpleMessage(
       "Tägliche kcal-Anpassung:",
     ),

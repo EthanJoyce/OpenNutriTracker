@@ -104,26 +104,6 @@ class S {
     return Intl.message('Add', name: 'addLabel', desc: '', args: []);
   }
 
-  /// `Create custom meal item?`
-  String get createCustomDialogTitle {
-    return Intl.message(
-      'Create custom meal item?',
-      name: 'createCustomDialogTitle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Do you want create a custom meal item?`
-  String get createCustomDialogContent {
-    return Intl.message(
-      'Do you want create a custom meal item?',
-      name: 'createCustomDialogContent',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Settings`
   String get settingsLabel {
     return Intl.message('Settings', name: 'settingsLabel', desc: '', args: []);
