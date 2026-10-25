@@ -5,6 +5,7 @@ import 'package:opennutritracker/core/domain/entity/app_theme_entity.dart';
 import 'package:opennutritracker/core/domain/entity/user_entity.dart';
 import 'package:opennutritracker/core/domain/usecase/add_config_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/add_tracked_day_usecase.dart';
+import 'package:opennutritracker/core/domain/usecase/get_backup_info_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_config_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_kcal_goal_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/get_macro_goal_usecase.dart';
@@ -24,6 +25,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final AddTrackedDayUsecase _addTrackedDayUsecase;
   final GetKcalGoalUsecase _getKcalGoalUsecase;
   final GetMacroGoalUsecase _getMacroGoalUsecase;
+  final GetBackupInfoUsecase _getBackupInfoUsecase;
 
   SettingsBloc(
       this._getUserUsecase,
@@ -31,7 +33,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       this._addConfigUsecase,
       this._addTrackedDayUsecase,
       this._getKcalGoalUsecase,
-      this._getMacroGoalUsecase)
+      this._getMacroGoalUsecase,
+      this._getBackupInfoUsecase)
       : super(SettingsInitial()) {
     on<LoadSettingsEvent>((event, emit) async {
       emit(SettingsLoadingState());
@@ -98,6 +101,39 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         proteinGoalPct.toInt() / 100, fatGoalPct.toInt() / 100);
   }
 
+  Future<bool> getAutoBackupEnabled() async {
+    final config = await _getConfigUsecase.getConfig();
+    return config.autoBackupEnabled ?? false;
+  }
+
+  Future<String?> getAutoBackupLocation() async {
+    final config = await _getConfigUsecase.getConfig();
+    return config.autoBackupLocation;
+  }
+
+  Future<int?> getAutoBackupIntervalDays() async {
+    final config = await _getConfigUsecase.getConfig();
+    return config.autoBackupIntervalDays;
+  }
+
+  Future<bool> getAutoBackupOverwrite() async {
+    final config = await _getConfigUsecase.getConfig();
+    return config.autoBackupOverwrite ?? true;
+  }
+
+  Future<void> reloadBackupInfo() async {
+    await _getBackupInfoUsecase.reloadBackupInfo();
+  }
+
+  Future<DateTime?> getLastBackupTimestamp() async {
+    final backupInfo = await _getBackupInfoUsecase.getBackupInfo();
+    return backupInfo.lastBackupTimestamp;
+  }
+
+  Future<void> setAutoBackupConfig(bool autoBackupEnabled, String? autoBackupLocation, int? autoBackupIntervalDays, bool? autoBackupOverwrite) async {
+    await _addConfigUsecase.setAutoBackupConfig(autoBackupEnabled, autoBackupLocation, autoBackupIntervalDays, autoBackupOverwrite);
+  }
+
   void updateTrackedDay(DateTime day) async {
     final day = DateTime.now();
     final totalKcalGoal = await _getKcalGoalUsecase.getKcalGoal();
@@ -120,3 +156,31 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 }
 
 enum SystemDropDownType { metric, imperial }
+
+enum BackupIntervalDropDownType { daily, weekly, monthly }
+
+enum BackupBehaviorDropDownType { overwrite, createNew }
+
+BackupIntervalDropDownType? getBackupIntervalEnumFromValue(int intervalDays) {
+  switch(intervalDays) {
+    case 1:
+      return BackupIntervalDropDownType.daily;
+    case 7:
+      return BackupIntervalDropDownType.weekly;
+    case 30:
+      return BackupIntervalDropDownType.monthly;
+    default:
+      return null;
+  }
+}
+
+int? getBackupIntervalValueFromEnum(BackupIntervalDropDownType intervalEnum) {
+  switch(intervalEnum) {
+    case BackupIntervalDropDownType.daily:
+      return 1;
+    case BackupIntervalDropDownType.weekly:
+      return 7;
+    case BackupIntervalDropDownType.monthly:
+      return 30;
+  }
+}
