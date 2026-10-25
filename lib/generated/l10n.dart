@@ -823,6 +823,161 @@ class S {
     return Intl.message('Import', name: 'importAction', desc: '', args: []);
   }
 
+  /// `Automatic Backup`
+  String get automaticBackupLabel {
+    return Intl.message(
+      'Automatic Backup',
+      name: 'automaticBackupLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automatic backup is currently only supported on Android`
+  String get backupNotSupportedLabel {
+    return Intl.message(
+      'Automatic backup is currently only supported on Android',
+      name: 'backupNotSupportedLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enable automatic backups`
+  String get enableAutomaticBackupLabel {
+    return Intl.message(
+      'Enable automatic backups',
+      name: 'enableAutomaticBackupLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Backup status`
+  String get backupStatusLabel {
+    return Intl.message(
+      'Backup status',
+      name: 'backupStatusLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Backup location`
+  String get backupLocationLabel {
+    return Intl.message(
+      'Backup location',
+      name: 'backupLocationLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `none`
+  String get backupNotSetLabel {
+    return Intl.message('none', name: 'backupNotSetLabel', desc: '', args: []);
+  }
+
+  /// `Backup interval`
+  String get backupIntervalLabel {
+    return Intl.message(
+      'Backup interval',
+      name: 'backupIntervalLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `daily`
+  String get backupIntervalDailyLabel {
+    return Intl.message(
+      'daily',
+      name: 'backupIntervalDailyLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `weekly`
+  String get backupIntervalWeeklyLabel {
+    return Intl.message(
+      'weekly',
+      name: 'backupIntervalWeeklyLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `monthly`
+  String get backupIntervalMonthlyLabel {
+    return Intl.message(
+      'monthly',
+      name: 'backupIntervalMonthlyLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Backup behavior`
+  String get backupBehaviorLabel {
+    return Intl.message(
+      'Backup behavior',
+      name: 'backupBehaviorLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `overwrite`
+  String get backupBehaviorOverwriteLabel {
+    return Intl.message(
+      'overwrite',
+      name: 'backupBehaviorOverwriteLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `create new file`
+  String get backupBehaviorCreateNewLabel {
+    return Intl.message(
+      'create new file',
+      name: 'backupBehaviorCreateNewLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last backup:`
+  String get backupStatusLastBackupLabel {
+    return Intl.message(
+      'Last backup:',
+      name: 'backupStatusLastBackupLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `never`
+  String get backupStatusNeverLabel {
+    return Intl.message(
+      'never',
+      name: 'backupStatusNeverLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Backup now`
+  String get backupNowLabel {
+    return Intl.message(
+      'Backup now',
+      name: 'backupNowLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Today`
   String get dateTodayLabel {
     return Intl.message('Today', name: 'dateTodayLabel', desc: '', args: []);

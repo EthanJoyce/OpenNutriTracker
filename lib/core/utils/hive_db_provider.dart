@@ -1,9 +1,8 @@
-import 'dart:typed_data';
-
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:opennutritracker/core/data/data_source/user_activity_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/app_theme_dbo.dart';
+import 'package:opennutritracker/core/data/dbo/backup_info_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/config_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/intake_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/intake_type_dbo.dart';
@@ -22,15 +21,23 @@ class HiveDBProvider extends ChangeNotifier {
   static const userActivityBoxName = 'UserActivityBox';
   static const userBoxName = 'UserBox';
   static const trackedDayBoxName = 'TrackedDayBox';
+  static const backupInfoBoxName = 'BackupInfoBox';
 
   late Box<ConfigDBO> configBox;
   late Box<IntakeDBO> intakeBox;
   late Box<UserActivityDBO> userActivityBox;
   late Box<UserDBO> userBox;
   late Box<TrackedDayDBO> trackedDayBox;
+  // Backup Info is accessed by multiple isolates (the main isolate + the background
+  // task worker). Therefore it must be lazy to ensure each read pulls directly from
+  // persistent storage, otherwise the main app won't update until it's restarted
+  late Box<BackupInfoDBO> backupInfoBox;
+
+  HiveCipher? _encryptionCypher;
 
   Future<void> initHiveDB(Uint8List encryptionKey) async {
     final encryptionCypher = HiveAesCipher(encryptionKey);
+    _encryptionCypher = encryptionCypher;
     await Hive.initFlutter();
     Hive.registerAdapter(ConfigDBOAdapter());
     Hive.registerAdapter(IntakeDBOAdapter());
@@ -47,6 +54,7 @@ class HiveDBProvider extends ChangeNotifier {
     Hive.registerAdapter(PhysicalActivityDBOAdapter());
     Hive.registerAdapter(PhysicalActivityTypeDBOAdapter());
     Hive.registerAdapter(AppThemeDBOAdapter());
+    Hive.registerAdapter(BackupInfoDBOAdapter());
 
     configBox =
         await Hive.openBox(configBoxName, encryptionCipher: encryptionCypher);
@@ -58,6 +66,23 @@ class HiveDBProvider extends ChangeNotifier {
         await Hive.openBox(userBoxName, encryptionCipher: encryptionCypher);
     trackedDayBox = await Hive.openBox(trackedDayBoxName,
         encryptionCipher: encryptionCypher);
+    backupInfoBox = await Hive.openBox(backupInfoBoxName,
+        encryptionCipher: encryptionCypher);
+  }
+
+  /// Closes and reopens the backup info box so its in-memory keystore is
+  /// repopulated from disk. The background task isolate writes to this same
+  /// box, so without a reopen the main app won't see those writes until restart.
+  Future<void> reloadBackupInfoBox() async {
+    if (_encryptionCypher == null) {
+      if (kDebugMode) {
+        debugPrint("Error trying to reload the backupInfoBox, cached encryption cypher is null");
+      }
+      return;
+    }
+    await backupInfoBox.close();
+    backupInfoBox = await Hive.openBox(backupInfoBoxName,
+        encryptionCipher: _encryptionCypher);
   }
 
   static generateNewHiveEncryptionKey() => Hive.generateSecureKey();
