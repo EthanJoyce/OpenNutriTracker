@@ -166,18 +166,18 @@ class _EditMealScreenState extends State<EditMealScreen> {
         )),
         const SizedBox(height: 32),
         TextFormField(
-          controller: _nameTextController,
+          controller: _brandsTextController,
           decoration: InputDecoration(
-              labelText: S.of(context).mealNameLabel,
+              labelText: S.of(context).mealBrandsLabel,
               border: const OutlineInputBorder()),
           keyboardType: TextInputType.text,
           textCapitalization: TextCapitalization.words,
         ),
         const SizedBox(height: 16),
         TextFormField(
-          controller: _brandsTextController,
+          controller: _nameTextController,
           decoration: InputDecoration(
-              labelText: S.of(context).mealBrandsLabel,
+              labelText: S.of(context).mealNameLabel,
               border: const OutlineInputBorder()),
           keyboardType: TextInputType.text,
           textCapitalization: TextCapitalization.words,
